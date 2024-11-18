@@ -1,6 +1,6 @@
 *** Variables ***
-${browser}    chrome
- 
+${browser}    chrome     #firefox
+ #en
 *** Settings ***
 Library        SeleniumLibrary
 Resource       ../Variables/config.resource
