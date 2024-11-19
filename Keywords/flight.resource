@@ -8,7 +8,7 @@ Resource       ../Variables/language/${language}.resource
 
 *** Keywords ***
 Search Flight
-    [Arguments]    ${fromCity}    ${toCity}    ${dd}=""
+    [Arguments]    ${fromCity}    ${toCity}    ${dd}=
     Click Element    FromSector_show
     
     Input Text    a_FromSector_show    ${fromCity}
@@ -17,6 +17,7 @@ Search Flight
     Click Element    //div[@id="fromautoFill"]/ul/li[1]
  
     Wait Until Page Contains Element    toautoFill_in    timeout=10s
+    Sleep   0.2s
     Input Text    a_Editbox13_show    ${toCity}
     Wait Until Element Is Enabled    //div[@id="toautoFill"]    timeout=10s
     Sleep   0.5s
