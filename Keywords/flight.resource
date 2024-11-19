@@ -8,7 +8,7 @@ Resource       ../Variables/language/${language}.resource
 
 *** Keywords ***
 Search Flight
-    [Arguments]    ${fromCity}    ${toCity}
+    [Arguments]    ${fromCity}    ${toCity}    ${dd}=""
     Click Element    FromSector_show
     
     Input Text    a_FromSector_show    ${fromCity}
@@ -23,9 +23,11 @@ Search Flight
     Click Element    //div[@id="toautoFill"]/ul/li[1]
  
     Wait Until Element Is Visible    dvcalendar    timeout=10s
-    Click Element    //li[@class="active-date"]
- 
-    Wait Until Element Is Visible    //button[@class="srchBtnSe"]    timeout=10s
+    ${datexpath}    Set Variable If    "${dd}"==""    
+    ...    //li[@class="active-date"]
+    ...    //li[@onclick="SelectDate(this.id)" and contains(text(),'${dd}')]
+    Wait Until Element Is Visible    ${datexpath}
+    Click Element    ${datexpath}
  
     #click on SEarch
     Click Button    //button[@class="srchBtnSe"]
