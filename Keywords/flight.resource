@@ -9,7 +9,7 @@ Resource    common.resource
 
 *** Keywords ***
 Search Flight
-    [Arguments]    ${fromCity}    ${toCity}
+    [Arguments]    ${fromCity}    ${toCity}    ${dd}=
     Click Element    FromSector_show
     
     Input Text    a_FromSector_show    ${fromCity}
@@ -18,15 +18,18 @@ Search Flight
     Click Element    //div[@id="fromautoFill"]/ul/li[1]
  
     Wait Until Page Contains Element    toautoFill_in    timeout=10s
+    Sleep   0.2s
     Input Text    a_Editbox13_show    ${toCity}
     Wait Until Element Is Enabled    //div[@id="toautoFill"]    timeout=10s
     Sleep   0.5s
     Click Element    //div[@id="toautoFill"]/ul/li[1]
  
     Wait Until Element Is Visible    dvcalendar    timeout=10s
-    Click Element    //li[@class="active-date"]
- 
-    Wait Until Element Is Visible    //button[@class="srchBtnSe"]    timeout=10s
+    ${datexpath}    Set Variable If    "${dd}"==""    
+    ...    //li[@class="active-date"]
+    ...    //li[@onclick="SelectDate(this.id)" and contains(text(),'${dd}')]
+    Wait Until Element Is Visible    ${datexpath}
+    Click Element    ${datexpath}
  
     #click on SEarch
     Click Button    //button[@class="srchBtnSe"]

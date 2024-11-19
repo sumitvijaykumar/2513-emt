@@ -15,4 +15,4 @@ Open Application
 
 Go to Home Page
     Go To    ${url}
-    Wait Until Element Is Visible    //a[@class="emt_logo"]    timeout=10s
+    Wait Until Element Is Visible    //a[@class="emt_logo"]    timeout=20s
