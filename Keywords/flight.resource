@@ -5,6 +5,7 @@ ${browser}    chrome     #firefox
 Library        SeleniumLibrary
 Resource       ../Variables/config.resource
 Resource       ../Variables/language/${language}.resource
+Resource    common.resource
 
 *** Keywords ***
 Search Flight
@@ -35,7 +36,7 @@ Verify Stops between cities
     Search Flight    fromCity=${fromcity}    toCity=${tocity}
     ${stopCount}    Get Flight Count    ${stop}
     Should Be Equal As Integers    ${stopCount}    ${expectedResult}
-
+    [Setup]    Go to Home Page
 Get Flight Count
     [Arguments]    ${Stops}
     Wait Until Element Is Not Visible    //div[@class="paperplane"]    timeout=10s
