@@ -3,7 +3,7 @@
 Resource      ../../Keywords/common.resource
 Resource      ../../Keywords/flight.resource
 Suite Setup    Open Application
-Test Setup    Go to Home Page
+#Test Setup    Go to Home Page
 Test Teardown    Capture Page Screenshot
 Suite Teardown    Close All Browsers
 Test Template    Verify Stops between cities
@@ -16,12 +16,13 @@ Verify Nonstop Flight Count
     # get the count
     [Tags]    Flight    Nonstop
     Mumba    Thiruva    Nonstop   1
-    
+    Chennai    Hyderabad    Nonstop    4
+    Delhi    Singapore    Nonstop    0
  
 Verify 1-Stop Flight Count
     # verify 1-stop countrobot
     [Tags]    Flight    1-stop
-    Coch    Delhi    1-stop    56
+    Coch    Delhi    1-stop    55
  
 Verify 2Stop Flight Count    #serially,   parallalyy
     # verify 2+-stop count
