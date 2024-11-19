@@ -16,7 +16,8 @@ Verify Nonstop Flight Count
     # get the count
     [Tags]    Flight    Nonstop
     Mumba    Thiruva    Nonstop   1
-    
+    Chennai    Hyderabad    Nonstop    1
+    Delhi    Singapore    Nonstop    3
  
 Verify 1-Stop Flight Count
     # verify 1-stop countrobot
