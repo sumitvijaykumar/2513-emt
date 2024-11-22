@@ -10,4 +10,4 @@ Suite Teardown    Close All Browsers
 
 Verify Search Buses
     [Tags]    bus    search
-    search buses    from=Mumbai    to=Delhi
+    search buses    from=Mumbai    to=Delhi    date=Sun Dec 01 2024
