@@ -1,0 +1,84 @@
+*** Settings ***
+Library        SeleniumLibrary
+Resource       ../Variables/config.resource
+Resource       ../Variables/language/${language}.resource
+Resource    common.resource
+
+
+
+
+
+*** Keywords ***
+Search bus
+    [Arguments]    ${fromCity}    ${toCity}   
+
+    Click Element    locator=//span[@data-cy="fromCity"]
+    Wait Until Element Is Visible    //input[@placeholder="From"]
+    Input Text    //input[@placeholder="From"]    ${fromCity}
+    Wait Until Element Is Visible    locator=//ul[@class="react-autosuggest__suggestions-list"]//span[contains(text(),'${fromCity}')]
+    Click Element    locator=//ul[@class="react-autosuggest__suggestions-list"]//span[contains(text(),'${fromCity}')]
+
+
+    Wait Until Element Is Visible    locator=//input[@placeholder="To"]
+    Input Text    //input[@placeholder="To"]    ${toCity}   
+    Wait Until Element Is Visible    //ul[@class="react-autosuggest__suggestions-list"]//span[contains(text(),'${toCity}')]
+    Click Element    //ul[@class="react-autosuggest__suggestions-list"]//span[contains(text(),'${toCity}')]
+    Wait Until Element Is Visible    //div[@aria-selected="true"]
+    Click Element    //div[@aria-selected="true"]
+    Click Button    //button[@data-cy="submit"]
+    Wait Until Element Is Visible    //p[contains(text(),'found')]
+    # ${bus_count_element}=  Get Text  //p[contains(text(),'found')]
+    # ${bus_count}=  Evaluate  '${bus_count_element}'.split(' ')[0]
+    # Log  Bus Count: ${bus_count}
+
+
+Go to home 
+    [Arguments]    ${url}=https://www.makemytrip.com/bus-tickets/
+    Open Browser    ${url}
+
+
+Pickup point 
+    [Arguments]    ${pickupPoint}    ${filterName}
+    #waiting for the filter menu
+    Wait Until Element Is Visible    //div[contains(text(),'${filterName}')]/../..//*[contains(text(),'${pickupPoint}')]
+    #clicking the drop point 
+    Click Element    //div[contains(text(),'${filterName}')]/../..//*[contains(text(),'${pickupPoint}')]
+    #after clicking the location verify that the container must contains the entered location 
+    
+    Sleep    2s
+  
+    Wait Until Element Is Visible    //div[@class="busListingContainer"]/following-sibling::*[1]
+   
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    //div[@id='toggle_buses']
+     Run Keyword And Ignore Error    Click Element    //div[@id='toggle_buses']
+    ${bus_count_element}=  Get Text  //p[contains(text(),'found')]
+    ${bus_count}=  Evaluate  '${bus_count_element}'.split(' ')[0]
+    Log  Bus Count: ${bus_count}
+    Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]
+    FOR    ${index}    IN RANGE    ${bus_count}
+        Log    Iteration: ${index}
+        Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    timeout=10s
+        Click Element    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    
+        Wait Until Element Is Visible    //p[contains(text(),'Pick')]/../ul/li//span[contains(text(),'${pickupPoint}')]    timeout=10s
+        #Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    timeout=10s
+        #Click Element    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]
+    END
+
+
+
+
+
+
+
+
+# Loop for verification
+#     [Arguments]    ${pickupPoint}    ${bus_count}  
+#      Wait Until Element Is Visible    //div[@class="busListingContainer"]/following-sibling::*[1]
+
+#      Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]
+#      FOR    ${index}    IN RANGE    ${bus_count}
+#         Log    Iteration: ${index}
+#         Click Element    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]
+#         Wait Until Element Is Visible    //p[contains(text(),'Pick')]/../ul/li//span[contains(text(),'${pickupPoint}')]    timeout=2s
+#         Click Element    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]
+#     END
