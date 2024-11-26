@@ -68,3 +68,6 @@ Fetch Top Rated Buses
                            
     Close All Browsers
 
+Verify Mydeals in buses
+    [Tags]    Bus    Search   
+    verify MyDeals    
