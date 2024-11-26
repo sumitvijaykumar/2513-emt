@@ -15,10 +15,9 @@ ${xpath}    //div[@class="makeFlex spaceBetween"]//span[2]
 *** Test Cases ***
 verify the filter for pick up time 
   filter for pick up time  filtertype=Pick up time - Thiruvananthapuram  timeofpickup=11 AM to 6 PM  starttime=11:00 AM  endtime=6:00 PM
-
-
-
-
+Filter verification
+    filter-window seat    filter=Single Seater    filteroption=Single
+    
 Verify the filter functionalities
     [Template]    Verify all the functionalities   
     [Documentation]    Checking the functionality of the Pick up point filter
@@ -69,6 +68,3 @@ Fetch Top Rated Buses
                            
     Close All Browsers
 
-
-
-  
