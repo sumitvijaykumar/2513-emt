@@ -1,6 +1,7 @@
 *** Settings ***
 Resource    ./../../Keywords/common.resource
 Resource    ./../../Variables/config.resource
+Resource    ../../Keywords/bus.resource
 
 
 
@@ -20,8 +21,9 @@ Verify if rating filter works
     # ...    Verification
     # ...     check if the 1st result has the highest rating
     
-    Open Browser    url=https://www.makemytrip.com/bus/search/Mumbai/Delhi/01-12-2024?from_code=MMTCC1599&to_code=MMTCC1199    browser=Chrome
-    Maximize Browser Window
+    Open Application
+    Go to Home Page
+    search buses    Mumbai    Delhi    Sun Dec 01 2024
     Wait Until Element Is Visible    locator=//p[@class="latoBold secondaryTxt font14"]
     @{ratings}    Create List
     ${elements}=    Get WebElements    ${XPATH}
