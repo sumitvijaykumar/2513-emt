@@ -32,3 +32,41 @@ search buses
 
 
 
+filter for pick up time
+  [Arguments]  ${filtertype}   ${timeofpickup}  ${starttime}   ${endtime}
+    ${noofbusfound}=   Get Text  //p[contains(text(),'found')]
+  Wait Until Element Is Visible  //li[@class="containerHorizontal"]//div[contains(text(),'${filtertype}')]
+  Click Element  //div[contains(text(),'${filtertype}')]/ancestor::li[@class="containerHorizontal"]//div[@class="time-filter-option "]/span[contains(text(),'${timeofpickup}')]
+  Wait Until Element Is Visible  //div[@class="time-filter-option selected"]
+  Sleep  5s
+  ${elements} =  Get WebElements   //span[@class="font18 latoBlack blackText appendRight4"]
+  @{SORTEDTIME}    Create List 
+
+  FOR  ${element}  IN  @{elements}
+   ${time}=  Get Text  ${element}
+   
+   #${Ntime}=  Convert Time  time=${time} 
+  Append To List  ${SORTEDTIME}  ${time} 
+  Log To Console  ${time}
+  
+  END
+  Sort List   ${SORTEDTIME}
+  Log To Console  ${SORTEDTIME}
+
+  ${starttime_24}    convert_to_24_hour     ${starttime}   
+  ${nstarttime_24}=    Replace String    ${starttime_24}    :     ${EMPTY}
+  
+  ${endtime_24}      convert_to_24_hour    ${endtime}  
+    ${nendtime_24}=    Replace String    ${endtime_24}    :     ${EMPTY}
+
+
+  ${firsttime}  Get From List  list_=${SORTEDTIME}  index=0
+  #${timefirst}=  time2.convertstringtotime  ${firsttime}
+  ${ntimefirst}=    Replace String    ${firsttime}    :     ${EMPTY}
+
+  #${timefirst}=  Convert To Integer  item=${firsttime}
+  ${lasttime}   Get From List   list_=${SORTEDTIME}  index=-1
+ # ${Nlasttime}=  time2.Convertstringtotime   ${lasttime}
+   ${nlasttime}=    Replace String    ${lasttime}    :     ${EMPTY}
+  Should Be True  ${ntimefirst} >= ${nstarttime_24}
+    Should Be True  ${nlasttime} <= ${nendtime_24}
