@@ -1,7 +1,7 @@
 *** Settings ***
 Library  SeleniumLibrary
 Resource    ../Variables/config.resource
-
+Library    Collections
 *** Keywords ***
 
 Open Application
@@ -15,4 +15,4 @@ Open Application
 
 Go to Home Page
     Go To    ${url}
-    Wait Until Element Is Visible    //a[@class="emt_logo"]    timeout=20s
+    Wait Until Element Is Visible    //img[@alt="Make My Trip"]    timeout=10s
