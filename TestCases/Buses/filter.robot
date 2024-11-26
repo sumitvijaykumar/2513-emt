@@ -68,3 +68,30 @@ Fetch Top Rated Buses
                            
     Close All Browsers
 
+Verify functionality of Primo bus filter
+    [Documentation]    steps 
+    ...    Open the browser and click on url to open makeMyTrip website 
+    ...    Input two cities and select travel date
+    ...    click on search button
+    ...    Click on Primo buses filter option 
+    ...    Verification - verify that the number of buses with filter is equal to the number of primo icons in the results 
+
+    
+    Open Browser    url=https://www.makemytrip.com/bus/search/Mumbai/Delhi/01-12-2024?from_code=MMTCC1599&to_code=MMTCC1199    browser=Chrome
+    Maximize Browser Window
+    # Clicking Primo buses filter
+    Click Element    //div[@class="filter-item-dtl"]/h2[contains(text(),"Primo")]
+    Wait Until Element Is Enabled    locator=//img[@class="sc-jAaTju hyUDU"]
+
+    # Getting number of buses after applying filter
+    ${textVar}    Get Text    //p[contains(text(),"buses found")]
+    ${resultBusCount}    Set Variable    ${textVar.replace(' buses found','')}
+    Log To Console    ${textVar}
+    # Getting primo logo count in result tab
+    ${logoCount}    Get Element Count    //div[@class="busListingContainer"]//span[@class="listingSprite newPrimoIcon appendRight24"]
+   
+    # verification
+    Should Be Equal As Integers    ${logoCount}    ${resultBusCount}
+    [Teardown]    Capture Page Screenshot    EMBED
+
+
