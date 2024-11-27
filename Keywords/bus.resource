@@ -196,3 +196,38 @@ Verify Selected Drop Point Present In Each Bus
         Wait Until Element Is Visible    (//p[contains(text(),'Drop')]/../ul/li//span[contains(text(),'${dropPointName}')])[${index}]      timeout=10s
         # Log    ${index}
     END
+
+Select Filtertypes  
+     [Arguments]      ${filtertype}   ${expectedResult} 
+   
+    Wait Until Element Is Visible   //div[contains(text(),'AC')]    timeout=10s
+    
+    # Click the normalized filter for interaction
+    ${normalized_filter}=   Normalize Filter Type For Click   ${filtertype}
+    Wait Until Element Is Visible   locator=//span[normalize-space(translate(., '/', ''))='${normalized_filter}']
+    Click Element   locator=//span[normalize-space(translate(., '/', ''))='${normalized_filter}']
+    Capture Page Screenshot
+    Wait Until Element Is Visible   //div[@class="busCardContainer "]       timeout=20s
+
+    # Get the count for the original filter type
+    ${count}=   Get Bus Count Based On Filter   ${filtertype}
+    Should Be Equal As Integers   ${count}   ${expectedResult}
+    Go to Home Page
+    Capture Page Screenshot   EMBED
+Normalize Filter Type For Click
+    [Arguments]   ${filtertype}
+    ${filter_map}=    Create Dictionary    A/C=AC    Non A/C=Non AC  NON A/C=Non AC
+    ${normalized}=    Run Keyword If    '${filtertype}' in ${filter_map}    Set Variable    ${filter_map['${filtertype}']}    ELSE    Set Variable    ${filtertype}
+    [Return]    ${normalized}
+
+Create Filter Conditions
+    [Arguments]   ${filtertype}
+    ${xpath}=    Set Variable    //div[@class="busCardContainer "]//p[contains(text(), "${filtertype}")]
+    Log    FilterType: ${filtertype}, XPath: ${xpath}
+    [Return]    ${xpath}
+
+Get Bus Count Based On Filter
+    [Arguments]   ${filtertype}
+    ${xpath}=   Create Filter Conditions   ${filtertype}
+    ${count}=   Get Element Count   ${xpath}
+    [Return]   ${count}        
