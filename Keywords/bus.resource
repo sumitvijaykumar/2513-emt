@@ -2,7 +2,7 @@
 Resource    common.resource
 Resource       ../Variables/config.resource
 Resource       ../Variables/language/${language}.resource
-
+Library        ../Libraries/time_1.py
 
 *** Keywords ***
 
@@ -32,12 +32,12 @@ search buses
       Wait Until Element Is Visible    //p[contains(text(),'found')]
 
 
-filter for pick up time
-  [Arguments]  ${filtertype}   ${timeofpickup}  ${starttime}   ${endtime}
-    ${noofbusfound}=   Get Text  //p[contains(text(),'found')]
-  Wait Until Element Is Visible  //li[@class="containerHorizontal"]//div[contains(text(),'${filtertype}')]
-  Click Element  //div[contains(text(),'${filtertype}')]/ancestor::li[@class="containerHorizontal"]//div[@class="time-filter-option "]/span[contains(text(),'${timeofpickup}')]
-  Wait Until Element Is Visible  //div[@class="time-filter-option selected"]
+verify filter for pick up time
+  [Arguments]     ${starttime}   ${endtime}
+  #  ${noofbusfound}=   Get Text  //p[contains(text(),'found')]
+ # Wait Until Element Is Visible  //li[@class="containerHorizontal"]//div[contains(text(),'${filtertype}')]
+ # Click Element  //div[contains(text(),'${filtertype}')]/ancestor::li[@class="containerHorizontal"]//div[@class="time-filter-option "]/span[contains(text(),'${timeofpickup}')]
+  #Wait Until Element Is Visible  //div[@class="time-filter-option selected"]
   Sleep  5s
   ${elements} =  Get WebElements   //span[@class="font18 latoBlack blackText appendRight4"]
   @{SORTEDTIME}    Create List 
