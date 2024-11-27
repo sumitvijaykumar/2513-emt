@@ -71,35 +71,28 @@ filter for pick up time
   Should Be True  ${ntimefirst} >= ${nstarttime_24}
     Should Be True  ${nlasttime} <= ${nendtime_24}
 
-filter-window seat
+
+#filter-window seat
     [Documentation]      Test case  
     ...    1,open the  browser
     ...    2,enter the link ;  https://www.makemytrip.com/bus/search/Mumbai/Kolhapur/23-11-2024?from_code=MMTCC1599&to_code=MMTCC43090
     ...    3,click on the Single seat filter option
     ...    4,verification 1-verify that the number of buses with filter is equal to the number of buses in the results 
     ...    5,verification 2-verify that all the result have the window/single seat
-
-        
-    Open Browser    url=https://www.makemytrip.com/bus/search/Mumbai/Kolhapur/23-11-2024?from_code=MMTCC1599&to_code=MMTCC43090    browser=chrome
-    Maximize Browser Window
-    Wait Until Element Is Visible    busList
-
-    [Arguments]     ${filter}    ${filteroption}  
-#number of buses with filter option
-    ${count1with()}    Get Text     //div[contains(text(),'${filter}')]/ancestor::li[@class='containerHorizontal']//div[@class="pushRight sc-cHGsZl eGWbUe"]
+Get count of window seat filter
+      
+    ${count1with()}    Get Text     //div[contains(text(),'Single')]/ancestor::li[@class='containerHorizontal']//div[@class="pushRight sc-cHGsZl eGWbUe"]
     ${countwithout(}    Replace String    ${count1with()}    replace_with=${EMPTY}    search_for=(
-    ${count1}    Replace String    ${countwithout(}    replace_with=${EMPTY}    search_for=)   
-    Log To Console    ${count1} 
+    ${count1}    Replace String    ${countwithout(}    replace_with=${EMPTY}    search_for=)
+    RETURN    ${count1}    
 
-    Click Element    //div[contains(text(),'${filter}')]/ancestor::li[@class='containerHorizontal']//span[contains(text(),'${filteroption}')]
-    Wait Until Element Is Visible    //div[contains(@class,"selected ")]
-    Wait Until Element Is Visible    busList
-#number of buses with filter applied   
+Get count of the number of results
+     
     ${count2withstring}    Get Text    //p[@class='latoBold secondaryTxt font14']
     ${count2}    Replace String    string=${count2withstring}    replace_with=${EMPTY}    search_for= buses found
-#verification 1   
-    Should Be Equal    ${count1}    ${count2}
-#verification 2
+    RETURN    ${count2}
+
+verification for the window seat-filter 
     ${elem}    Get WebElements    //ul[contains(@class, "sc-fjdhpX fXgCif") and contains(string(.), "Window Seats")]   
     ${list}    Create List
     FOR    ${el}     IN     @{elem}
@@ -107,9 +100,9 @@ filter-window seat
         Should Contain    ${text}    item=Window Seats 
         Append To List    ${list}    ${text}
     END   
-    #Log To Console    ${list}
-
-    Close All Browsers
+    # Click Element    //div[contains(text(),'${filter}')]/ancestor::li[@class='containerHorizontal']//span[contains(text(),'${filteroption}')]
+    # Wait Until Element Is Visible    //div[contains(@class,"selected ")]
+    # Wait Until Element Is Visible    busList
 
 
 Pickup point 
