@@ -95,3 +95,46 @@ Verify functionality of Primo bus filter
     [Teardown]    Capture Page Screenshot    EMBED
 
 
+
+Sort By Arrival
+ #sorting bus on the basis of arrival time
+ #search bus from mumbai to pune
+ #Calculate the arrival time before
+ #click arrival button
+ #get arrival time after
+ #vaerification
+
+  Open Application
+  Go to Home Page
+  search buses    Mumbai       Pune     Sun Dec 01 2024
+   #arrival times before
+    ${buslist_before}    SeleniumLibrary.Get WebElements    locator=//span[contains(@class,"font18 blackText")]
+   @{arrivalTimes_before}    BuiltIn.Create List
+   FOR    ${time}    IN    @{buslist_before}
+    ${arrivaltime}    SeleniumLibrary.Get Element Attribute    ${time}    textContent
+    Collections.Append To List    ${arrivalTimes_before}    ${arrivaltime}
+  END
+   Collections.Sort List    list_=${arrivalTimes_before}
+   ${minimum_before}    BuiltIn.Set Variable    ${arrivalTimes_before}[0]
+   ${maximum_before}    BuiltIn.Set Variable    ${arrivalTimes_before}[-1]
+
+  # Click arrival button
+     SeleniumLibrary.Click Element    locator=//li[contains(text(),"Arrival")]   
+
+ #arrival times after
+     ${buslist_after}    SeleniumLibrary.Get WebElements    locator=//span[contains(@class,"font18 blackText")]
+    @{arrivaltimes_after}    BuiltIn.Create List
+    FOR    ${time}    IN    @{buslist_after}
+    ${arrivaltime}    SeleniumLibrary.Get Element Attribute    ${time}    textContent
+    Append To List    ${arrivaltimes_after}    ${arrivaltime}
+    END
+     Collections.Sort List    list_=${arrivaltimes_after}
+     ${minimum_after}    BuiltIn.Set Variable    ${arrivaltimes_after}[0]
+     ${maximum_after}    BuiltIn.Set Variable    ${arrivaltimes_after}[-1]
+
+# Verify arrival times
+      BuiltIn.Should Be Equal    ${arrivalTimes_before}    ${arrivaltimes_after}
+      Close All Browsers
+      
+
+
