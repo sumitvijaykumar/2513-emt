@@ -139,29 +139,19 @@ Verify all the functionalities
      search buses    fromCity=${fromCity}    toCity=${toCity}    Mon Dec 02 2024
     Pickup point    pickupPoint=${pickupPoint}    filterName=${filterName}
 
-Apply drop point filter  
-    [Arguments]     ${filterheading}    ${filtervalue}    
-    ${SearchResultBefore}    Get Text    //div//p[@class="latoBold secondaryTxt font14"]
-
-
-    ${xpath}    Set Variable    //div[contains(text(),'${filterheading}')]/ancestor::li[@class="containerHorizontal"]//span[contains(text(),'${filtervalue}')]
-    Wait Until Element Is Visible    ${xpath}
-    Click Element    locator=${xpath}
-    Sleep    3s
-    Run Keyword And Ignore Error   Element Should Not Be Visible  //div//p[contains(text(),'${SearchResultBefore}')]        #not visible akkanam
-    ${string}    Get Text    //div//p[@class="latoBold secondaryTxt font14"]
-    ${total}    Evaluate    "${string}".split(" ")[0]
-    Log To Console    ${total}
+Verify Selected Drop Point Present In Each Bus
+    [Arguments]    ${dropPointName}    
+    ${totalResult}        Get Number Of Search Results
     # ${total}    Evaluate    ${total}+1
     Scroll Element Into View    //div//p[@class="latoBold secondaryTxt font14"]
     Run Keyword And Ignore Error    Click Element    rtc_group_2768197
 
     Sleep    3s
-    FOR    ${index}    IN RANGE    1       ${total}+1
+    FOR    ${index}    IN RANGE    1       ${totalResult}+1
         # Scroll Element Into View     //div[@class="busCardContainer "][${index}]//li/span[@class="appendRight5"][contains(text(),'Pickups')]
         Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()='Pickups & Drops']
         Click Element      //div[@class="busCardContainer "]//span[text()='Pickups & Drops']    
-        Wait Until Element Is Visible    (//p[contains(text(),'Drop')]/../ul/li//span[contains(text(),'${filtervalue}')])[${index}]      timeout=10s
-        Log    ${index}
+        Wait Until Element Is Visible    (//p[contains(text(),'Drop')]/../ul/li//span[contains(text(),'${dropPointName}')])[${index}]      timeout=10s
+        # Log    ${index}
     END
-    Log To Console    ${index}
+    # Log To Console    ${index}

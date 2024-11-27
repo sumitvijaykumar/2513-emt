@@ -103,8 +103,17 @@ verify the drop point filter
     ...    wait for the updated result
     ...    for verify- go through all the buscard tab and click on pickups and drops then check for that city in drop points
     ...    verify the city contain in that field
-    # Open Browser    https://www.makemytrip.com/bus/search/Coimbatore/Thiruvananthapuram/24-11-2024?from_code=MMTCC1184&to_code=MMTCC48867
-    # ...    browser=chrome
-    Maximize Browser Window
-    Wait Until Element Is Visible    //div//p[@class="latoBold secondaryTxt font14"]
-    Apply drop point filter     filterheading=Drop point    filtervalue=Nerul
+    
+    #step 
+    Select Filter    
+    ...    Drop point            
+    ...    Nerul
+    
+    #verification
+    Verify Selected Drop Point Present In Each Bus    
+    ...    Nerul
+    
+
+
+
+
