@@ -2,7 +2,7 @@
 Resource    common.resource
 Resource       ../Variables/config.resource
 Resource       ../Variables/language/${language}.resource
-
+Library        ../Libraries/time_1.py
 
 *** Keywords ***
 

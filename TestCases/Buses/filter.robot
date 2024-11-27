@@ -13,8 +13,21 @@ ${xpath}    //div[@class="makeFlex spaceBetween"]//span[2]
 
 
 *** Test Cases ***
-verify the filter for pick up time 
+verify the filter for pick up time
+   [Documentation]  Checking the functionality of the pick up time 
+     #STEPS
+     #1.OPEN APPLICATION 
+     #2.SEARCH  BUSES
+     #3.CHECK FOR THE FILTER FUNCTIONALITY 
+     #4.VERIFICATION 
+  Open Application
+  Maximize Browser Window
+  search buses   from= Thiruvananthapuram    to= Bangalore  date=Sun Dec 01 2024
+  #APPLYING FILTER 
   filter for pick up time  filtertype=Pick up time - Thiruvananthapuram  timeofpickup=11 AM to 6 PM  starttime=11:00 AM  endtime=6:00 PM
+
+   [Teardown]   Capture Page Screenshot  EMBED
+   Close All Browsers
 Filter verification
     filter-window seat    filter=Single Seater    filteroption=Single
     

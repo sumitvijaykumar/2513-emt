@@ -2,6 +2,7 @@
 Library  SeleniumLibrary
 Resource    ../Variables/config.resource
 Library    Collections
+Library   String
 *** Keywords ***
 
 Open Application
