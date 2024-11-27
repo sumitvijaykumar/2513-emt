@@ -139,5 +139,6 @@ Sort By Arrival
 
 
 Verify Mydeals in buses
-    [Tags]    Bus    Search   
+    [Tags]    Bus    Search
+       
     verify MyDeals    
