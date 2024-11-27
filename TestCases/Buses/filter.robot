@@ -2,8 +2,10 @@
 Resource    ./../../Keywords/common.resource
 Resource    ./../../Variables/config.resource
 Library    ./../../Libraries/time_1.py
-
 Resource   ./../../Keywords/bus.resource
+Suite Setup    Open Application
+Test Setup    Go to Home Page    
+Suite Teardown    Exit browser
 
 *** Variables ***
 

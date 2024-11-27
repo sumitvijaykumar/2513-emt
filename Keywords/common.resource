@@ -18,3 +18,7 @@ Open Application
 Go to Home Page
     Go To    ${url}
     Wait Until Element Is Visible    //img[@alt="Make My Trip"]    timeout=10s
+
+Exit browser
+    Capture Page Screenshot  EMBED
+    Close All Browsers

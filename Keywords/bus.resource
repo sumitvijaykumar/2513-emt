@@ -188,3 +188,30 @@ verify MyDeals
     END
 
     Log To Console    ${index}
+
+Sort Bus Rating
+    [Arguments]    ${allBusRatings}
+    Wait Until Element Is Visible    locator=//p[@class="latoBold secondaryTxt font14"]
+    @{ratings}    Create List
+    ${elements}=    Get WebElements    ${allBusRatings}
+    FOR    ${element}    IN    @{elements}
+        ${rating}=    Get Text    ${element}    
+        Log To Console    ${rating}
+        Append To List    ${ratings}    ${rating}
+
+    END
+    Sort List    list_=${ratings}
+    ${length}    Get Length    item=${ratings}
+    ${top_rating}    Set Variable    ${ratings}[${length-1}]    
+    RETURN    ${top_rating}
+
+Sort Search Result with
+    [Arguments]    ${sorting_parameter}
+    Wait Until Element Is Visible    locator=//li[contains(text(),"${sorting_parameter}")]    timeout=5s
+    Click Element    locator=//li[contains(text(),"${sorting_parameter}")]
+
+Get First Bus Rating
+    [Arguments]    ${allBusRatings}
+    Wait Until Element Is Visible    locator=(${allBusRatings})[1]    timeout=5s
+    ${top}    Get Text    locator=(${allBusRatings})[1] 
+    RETURN    ${top}
