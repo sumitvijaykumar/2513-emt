@@ -186,4 +186,6 @@ Sort By Arrival
 
 Verify Mydeals in buses
     [Tags]    Bus    Search   
-    verify MyDeals    
+    search buses    From=Mumbai    To=Kolhapur    Date=Thu Dec 05 2024 
+    Apply MyDeals 
+    Verify MyDeals in search result    

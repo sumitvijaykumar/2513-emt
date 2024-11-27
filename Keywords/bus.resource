@@ -239,8 +239,13 @@ Get First Bus Rating
     ${top}    Get Text    locator=(${allBusRatings})[1] 
     RETURN    ${top}
 
-verify MyDeals
+Apply MyDeals
     Click Element    //div[@class="filter-slider-item false"]//div[@class="filter-item-dtl"]//h2[contains(text(),'MyDeals')]
+Verify MyDeals in search result
+    #[Arguments]    ${From}    ${To}    
+    
+    #Wait Until Element Is Visible    //div[@class="filter-slider-item false"]//div[@class="filter-item-dtl"]//h2[contains(text(),'MyDeals')]
+    
     ${totalbuses}    Get Element Count    //div[@class="busListingContainer"]//div[@class="busCardContainer "]    
     Log    ${totalbuses}
 
@@ -252,9 +257,10 @@ verify MyDeals
         
         Wait Until Page Contains Element    //div[@class="busListingContainer"]//div[@class="busCardContainer "]
 
-        ${Save}    Get Text    //div[@class="busListingContainer"]//div[@class="busCardContainer "][${index}]//span[contains(text(),'Save')]        
-    
-        Should Contain    ${Save}    Save
+        Wait Until Element Is Visible    //div[@class="busListingContainer"]//div[@class="busCardContainer "][${index}]//span[contains(text(),'Save ')]
+        # Log To Console    ${SaveText}            
+        # ${Save}    Get Text    //div[@class="busListingContainer"]//div[@class="busCardContainer "][${index}]//span[contains(text(),'Save ')]        #//span[@class="savedAmount"]//span[@class="latoBold"]
+        # Should Be Equal    first=${SaveText}    second=${Save}
         
         Log    ${index}
 
