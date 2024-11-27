@@ -15,8 +15,18 @@ ${xpath}    //div[@class="makeFlex spaceBetween"]//span[2]
 *** Test Cases ***
 verify the filter for pick up time 
   filter for pick up time  filtertype=Pick up time - Thiruvananthapuram  timeofpickup=11 AM to 6 PM  starttime=11:00 AM  endtime=6:00 PM
-Filter verification
-    filter-window seat    filter=Single Seater    filteroption=Single
+
+
+verify Filter-Single seat
+    Open Application
+    Go to Home Page
+    search buses    from=mumbai    to=kolhapur    date=Sun Dec 01 2024
+    ${count1}    get count of window seat filter
+    select filter    Single Seater    Single
+    ${count2}    Get count of the number of results
+    Should Be Equal    ${count1}    ${count2}
+    verification for the window seat-filter
+ 
     
 Verify the filter functionalities
     [Template]    Verify all the functionalities   
