@@ -18,3 +18,19 @@ Open Application
 Go to Home Page
     Go To    ${url}
     Wait Until Element Is Visible    //img[@alt="Make My Trip"]    timeout=10s
+
+Select Filter
+    [Arguments]   ${heading}    ${filterValue}
+    Wait Until Element Is Visible    //div//p[@class="latoBold secondaryTxt font14"]
+    ${SearchResultBefore}    Get Text    //div//p[@class="latoBold secondaryTxt font14"]
+    ${xpath}    Set Variable    //div[contains(text(),'${heading}')]/ancestor::li[@class="containerHorizontal"]//span[contains(text(),'${filterValue}')]
+    Wait Until Element Is Visible    ${xpath}
+    Click Element    locator=${xpath}
+    Run Keyword And Ignore Error  Wait Until Element Is Not Visible   //div//p[contains(text(),'${SearchResultBefore}')]  timeout=2s 
+    #TODO: Verifcation  to be done here.
+
+Get Number Of Search Results
+    ${string}    Get Text    //div//p[@class="latoBold secondaryTxt font14"]
+    ${total}    Evaluate    "${string}".split(" ")[0]
+    Log To Console    ${total}
+    [Return]  ${total}
