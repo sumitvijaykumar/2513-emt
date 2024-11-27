@@ -108,6 +108,50 @@ Verify functionality of Primo bus filter
     [Teardown]    Capture Page Screenshot    EMBED
 
 
+verify the drop point filter
+    [Documentation]   checking the functionality of filter
+    ...    maximize the  window 
+    ...    wait for the total buses without filtering
+    ...    goto leftside navbar and select the location from drop point filter
+    ...    wait for the updated result
+    ...    for verify- go through all the buscard tab and click on pickups and drops then check for that city in drop points
+    ...    verify the city contain in that field
+    
+    #step 
+    Select Filter    
+    ...    Drop point            
+    ...    Nerul
+    
+    #verification
+    Verify Selected Drop Point Present In Each Bus    
+    ...    Nerul
+    
+
+
+
+
+verify the drop point filter
+    [Documentation]   checking the functionality of filter
+    ...    maximize the  window 
+    ...    wait for the total buses without filtering
+    ...    goto leftside navbar and select the location from drop point filter
+    ...    wait for the updated result
+    ...    for verify- go through all the buscard tab and click on pickups and drops then check for that city in drop points
+    ...    verify the city contain in that field
+    
+    #step 
+    Select Filter    
+    ...    Drop point            
+    ...    Nerul
+    
+    #verification
+    Verify Selected Drop Point Present In Each Bus    
+    ...    Nerul
+    
+
+
+
+
 
 Sort By Arrival
  #sorting bus on the basis of arrival time
