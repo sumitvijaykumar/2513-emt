@@ -140,6 +140,32 @@ Verify all the functionalities
     Pickup point    pickupPoint=${pickupPoint}    filterName=${filterName}
 
 
+
+
+
+verify MyDeals
+    Click Element    //div[@class="filter-slider-item false"]//div[@class="filter-item-dtl"]//h2[contains(text(),'MyDeals')]
+    ${totalbuses}    Get Element Count    //div[@class="busListingContainer"]//div[@class="busCardContainer "]    
+    Log    ${totalbuses}
+
+#verify this contains something with "Save" 
+
+    FOR    ${index}    IN RANGE    1    ${totalbuses}+1
+        
+        Wait Until Element Is Visible    //div[@class="filter-slider-item selectedCard"]
+        
+        Wait Until Page Contains Element    //div[@class="busListingContainer"]//div[@class="busCardContainer "]
+
+        ${Save}    Get Text    //div[@class="busListingContainer"]//div[@class="busCardContainer "][${index}]//span[contains(text(),'Save')]        
+    
+        Should Contain    ${Save}    Save
+        
+        Log    ${index}
+
+    END
+
+    Log To Console    ${index}
+
 verify MyDeals
     Click Element    //div[@class="filter-slider-item false"]//div[@class="filter-item-dtl"]//h2[contains(text(),'MyDeals')]
     ${totalbuses}    Get Element Count    //div[@class="busListingContainer"]//div[@class="busCardContainer "]    
