@@ -2,8 +2,10 @@
 Resource    ./../../Keywords/common.resource
 Resource    ./../../Variables/config.resource
 Library    ./../../Libraries/time_1.py
-
 Resource   ./../../Keywords/bus.resource
+Suite Setup    Open Application
+Test Setup    Go to Home Page    
+Suite Teardown    Exit browser
 
 *** Variables ***
 
@@ -103,6 +105,50 @@ Verify functionality of Primo bus filter
     # verification
     Should Be Equal As Integers    ${logoCount}    ${resultBusCount}
     [Teardown]    Capture Page Screenshot    EMBED
+
+
+verify the drop point filter
+    [Documentation]   checking the functionality of filter
+    ...    maximize the  window 
+    ...    wait for the total buses without filtering
+    ...    goto leftside navbar and select the location from drop point filter
+    ...    wait for the updated result
+    ...    for verify- go through all the buscard tab and click on pickups and drops then check for that city in drop points
+    ...    verify the city contain in that field
+    
+    #step 
+    Select Filter    
+    ...    Drop point            
+    ...    Nerul
+    
+    #verification
+    Verify Selected Drop Point Present In Each Bus    
+    ...    Nerul
+    
+
+
+
+
+verify the drop point filter
+    [Documentation]   checking the functionality of filter
+    ...    maximize the  window 
+    ...    wait for the total buses without filtering
+    ...    goto leftside navbar and select the location from drop point filter
+    ...    wait for the updated result
+    ...    for verify- go through all the buscard tab and click on pickups and drops then check for that city in drop points
+    ...    verify the city contain in that field
+    
+    #step 
+    Select Filter    
+    ...    Drop point            
+    ...    Nerul
+    
+    #verification
+    Verify Selected Drop Point Present In Each Bus    
+    ...    Nerul
+    
+
+
 
 
 
