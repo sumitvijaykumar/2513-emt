@@ -20,8 +20,8 @@ verify the filter for pick up time
 
 
 verify Filter-Single seat
-    Open Application
-    Go to Home Page
+    #Open Application
+    #Go to Home Page
     search buses    from=mumbai    to=kolhapur    date=Sun Dec 01 2024
     ${count1}    get count of window seat filter
     select filter    Single Seater    Single

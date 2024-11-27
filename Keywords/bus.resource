@@ -80,7 +80,8 @@ filter for pick up time
     ...    4,verification 1-verify that the number of buses with filter is equal to the number of buses in the results 
     ...    5,verification 2-verify that all the result have the window/single seat
 Get count of window seat filter
-    ${count1with()}    Get Text     //div[contains(text(),'${filter}')]/ancestor::li[@class='containerHorizontal']//div[@class="pushRight sc-cHGsZl eGWbUe"]
+      
+    ${count1with()}    Get Text     //div[contains(text(),'Single')]/ancestor::li[@class='containerHorizontal']//div[@class="pushRight sc-cHGsZl eGWbUe"]
     ${countwithout(}    Replace String    ${count1with()}    replace_with=${EMPTY}    search_for=(
     ${count1}    Replace String    ${countwithout(}    replace_with=${EMPTY}    search_for=)
     RETURN    ${count1}    
