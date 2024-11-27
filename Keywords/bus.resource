@@ -139,6 +139,22 @@ Verify all the functionalities
      search buses    fromCity=${fromCity}    toCity=${toCity}    Mon Dec 02 2024
     Pickup point    pickupPoint=${pickupPoint}    filterName=${filterName}
 
+
+filter-Primo buses and take bus count  
+    # Clicking Primo buses filter
+    Click Element    //div[@class="filter-item-dtl"]/h2[contains(text(),"Primo")]
+    Wait Until Element Is Enabled    locator=//img[@class="sc-jAaTju hyUDU"]
+
+    # Getting number of buses after applying filter
+    ${totalBusInResult}    Get Text    //p[contains(text(),"buses found")]
+    ${totalBusInResult}    Set Variable    ${totalBusInResult.replace(' buses found','')}
+    Log To Console    ${totalBusInResult}
+    RETURN    ${totalBusInResult}
+Take Primo logo count in result  
+    #Getting primo logo count in result tab
+    ${logoCountInResult}    Get Element Count    //div[@class="busListingContainer"]//span[@class="listingSprite newPrimoIcon appendRight24"]
+    RETURN    ${logoCountInResult}   
+
 Verify Selected Drop Point Present In Each Bus
     [Arguments]    ${dropPointName}    
     ${totalResult}        Get Number Of Search Results
