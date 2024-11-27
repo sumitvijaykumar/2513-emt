@@ -2,52 +2,39 @@
 Resource    ./../../Keywords/common.resource
 Resource    ./../../Variables/config.resource
 Resource    ../../Keywords/bus.resource
+Suite Setup    Open Application
+Test Setup    Go to Home Page    
+Suite Teardown    Exit browser
 
 
 
 *** Variables ***
-${XPATH}=    //span[@class="sc-kGXeez bfoMHl"]
-${rating}
+${allBusRatings}=    //span[@class="sc-kGXeez bfoMHl"]
+
 *** Test Cases ***
 Verify if rating filter works 
     [Documentation]  
     # ...  steps  
     # ...    1. Open the browser
-    # ...    2. Go to the URL:"https://www.makemytrip.com/bus/search/Mumbai/Delhi/01-12-2024?from_code=MMTCC1599&to_code=MMTCC1199"
-    # ...    3. Maximize the browser
-    # ...    4. collect the rating values and sort it
-    # ...    5. Apply the ratings filter
-    # ...    6. Store the top rating value in a variable
+    # ...    2. Go to the Make My Trip home page 
+    # ...    3. Search Bus from Mumbai to Delhi on Sun Dec 01 2024
+    # ...    4. Sort the results by Rating
+    # ...    5. Store the top rating value in a variable
     # ...    Verification
     # ...     check if the 1st result has the highest rating
     
-    Open Application
-    Go to Home Page
     search buses    Mumbai    Delhi    Sun Dec 01 2024
-    Wait Until Element Is Visible    locator=//p[@class="latoBold secondaryTxt font14"]
-    @{ratings}    Create List
-    ${elements}=    Get WebElements    ${XPATH}
-    FOR    ${element}    IN    @{elements}
-        ${rating}=    Get Text    ${element}    
-        Log To Console    ${rating}
-        Append To List    ${ratings}    ${rating}
+    ${expected_TopRatedBus}    Sort Bus Rating    ${allBusRatings}
+    #Step 1: sort by rating
+    Sort Search Result with    Rating 
+    ${actual_TopRatedBus}    Get First Bus Rating    ${allBusRatings}    
 
-    END
-    Sort List    list_=${ratings}
-    ${length}    Get Length    item=${ratings}
-    ${top_rating}    Set Variable    ${ratings}[${length-1}]    
-    Log To Console    message=${top_rating}
-
-    Wait Until Element Is Visible    locator=//li[contains(text(),"Rating")]    timeout=5s
-    Click Element    locator=//li[contains(text(),"Rating")]
-    Sleep    time_=5s
-    ${top}    Get Text    locator=(//span[@class="sc-kGXeez bfoMHl"])[1]
-    Should Be Equal As Strings    first=${top_rating}    second=${top}
-    [Teardown]    Exit browser
+    #Verification
+    Should Be Equal As Strings    first=${expected_TopRatedBus}    second=${actual_TopRatedBus}
     
     
-*** Keywords ***
-Exit browser
-    Capture Page Screenshot  EMBED
-    Close All Browsers
 
+
+
+
+    

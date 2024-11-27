@@ -35,3 +35,7 @@ Get Number Of Search Results
     ${total}    Evaluate    "${string}".split(" ")[0]
     Log To Console    ${total}
     [Return]  ${total}
+    
+Exit browser
+    Capture Page Screenshot  EMBED
+    Close All Browsers

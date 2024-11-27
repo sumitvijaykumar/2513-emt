@@ -196,3 +196,68 @@ Verify Selected Drop Point Present In Each Bus
         Wait Until Element Is Visible    (//p[contains(text(),'Drop')]/../ul/li//span[contains(text(),'${dropPointName}')])[${index}]      timeout=10s
         # Log    ${index}
     END
+
+Verify Selected Drop Point Present In Each Bus
+    [Arguments]    ${dropPointName}    
+    ${totalResult}        Get Number Of Search Results
+    # ${total}    Evaluate    ${total}+1
+    Scroll Element Into View    //div//p[@class="latoBold secondaryTxt font14"]
+    Run Keyword And Ignore Error    Click Element    rtc_group_2768197
+
+    Sleep    3s
+    FOR    ${index}    IN RANGE    1       ${totalResult}+1
+        # Scroll Element Into View     //div[@class="busCardContainer "][${index}]//li/span[@class="appendRight5"][contains(text(),'Pickups')]
+        Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()='Pickups & Drops']
+        Click Element      //div[@class="busCardContainer "]//span[text()='Pickups & Drops']    
+        Wait Until Element Is Visible    (//p[contains(text(),'Drop')]/../ul/li//span[contains(text(),'${dropPointName}')])[${index}]      timeout=10s
+        # Log    ${index}
+        END
+Sort Bus Rating
+    [Arguments]    ${allBusRatings}
+    Wait Until Element Is Visible    locator=//p[@class="latoBold secondaryTxt font14"]
+    @{ratings}    Create List
+    ${elements}=    Get WebElements    ${allBusRatings}
+    FOR    ${element}    IN    @{elements}
+        ${rating}=    Get Text    ${element}    
+        Log To Console    ${rating}
+        Append To List    ${ratings}    ${rating}
+
+    END
+    Sort List    list_=${ratings}
+    ${length}    Get Length    item=${ratings}
+    ${top_rating}    Set Variable    ${ratings}[${length-1}]    
+    RETURN    ${top_rating}
+
+Sort Search Result with
+    [Arguments]    ${sorting_parameter}
+    Wait Until Element Is Visible    locator=//li[contains(text(),"${sorting_parameter}")]    timeout=5s
+    Click Element    locator=//li[contains(text(),"${sorting_parameter}")]
+
+Get First Bus Rating
+    [Arguments]    ${allBusRatings}
+    Wait Until Element Is Visible    locator=(${allBusRatings})[1]    timeout=5s
+    ${top}    Get Text    locator=(${allBusRatings})[1] 
+    RETURN    ${top}
+
+verify MyDeals
+    Click Element    //div[@class="filter-slider-item false"]//div[@class="filter-item-dtl"]//h2[contains(text(),'MyDeals')]
+    ${totalbuses}    Get Element Count    //div[@class="busListingContainer"]//div[@class="busCardContainer "]    
+    Log    ${totalbuses}
+
+#verify this contains something with "Save" 
+
+    FOR    ${index}    IN RANGE    1    ${totalbuses}+1
+        
+        Wait Until Element Is Visible    //div[@class="filter-slider-item selectedCard"]
+        
+        Wait Until Page Contains Element    //div[@class="busListingContainer"]//div[@class="busCardContainer "]
+
+        ${Save}    Get Text    //div[@class="busListingContainer"]//div[@class="busCardContainer "][${index}]//span[contains(text(),'Save')]        
+    
+        Should Contain    ${Save}    Save
+        
+        Log    ${index}
+
+    END
+
+    Log To Console    ${index}
