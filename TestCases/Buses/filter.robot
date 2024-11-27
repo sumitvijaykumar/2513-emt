@@ -96,17 +96,19 @@ Verify functionality of Primo bus filter
 
 
 
+
+
+
+
 Sort By Arrival
- #sorting bus on the basis of arrival time
  #search bus from mumbai to pune
- #Calculate the arrival time before
+ #arrival time before clicking arrival button
  #click arrival button
  #get arrival time after
- #vaerification
-
-  Open Application
-  Go to Home Page
-  search buses    Mumbai       Pune     Sun Dec 01 2024
+ #verification
+   Open Application
+   common.Go to Home Page
+   bus.search buses    Mumbai     Pune     Thu  Nov 28 2024
    #arrival times before
     ${buslist_before}    SeleniumLibrary.Get WebElements    locator=//span[contains(@class,"font18 blackText")]
    @{arrivalTimes_before}    BuiltIn.Create List
@@ -135,6 +137,4 @@ Sort By Arrival
 # Verify arrival times
       BuiltIn.Should Be Equal    ${arrivalTimes_before}    ${arrivaltimes_after}
       Close All Browsers
-      
-
 
