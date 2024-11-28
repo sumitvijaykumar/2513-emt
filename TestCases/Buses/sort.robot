@@ -31,6 +31,33 @@ Verify if rating filter works
 
     #Verification
     Should Be Equal As Strings    first=${expected_TopRatedBus}    second=${actual_TopRatedBus}
+
+
+
+
+Sort the bus by Arrival Times
+   [Documentation]
+   #steps
+   #Open the browser
+   #Go to home page 
+   #Search from Mumbai to Pune on 29 Nov 2024
+   #Get the arrival time before
+   #Click on arrival button
+   #Get the arrival time after
+   #verification
+
+    search buses    Mumbai       pune      Fri Nov 29 2024
+     
+     ${expectedArrivaltime}     Get Arrival Times Before 
+     #step 1 sort by arrival 
+     Sort Search Result with     Arrival     
+     ${actualArrivaltime}       Get Arrival time After     
+
+     #verification
+
+     BuiltIn.Should Be Equal      ${expectedArrivaltime}        ${actualArrivaltime} 
+     
+
     
     
 

@@ -308,3 +308,33 @@ Top Rated Buses Comparison
     #actual result and expecetd result should be same
     Should Be Equal    ${actual_result}    second=${expected_rating}                      
     Close All Browsers
+
+
+Get Arrival Times Before
+    ${buslist_before}    SeleniumLibrary.Get WebElements    locator=//span[contains(@class,"font18 blackText")]
+    @{arrivalTimes_before}    BuiltIn.Create List
+     FOR    ${time}    IN     @{buslist_before}
+    ${arrivaltime}    SeleniumLibrary.Get Element Attribute    ${time}    textContent
+     Collections.Append To List    ${arrivalTimes_before}    ${arrivaltime}
+    END
+    Collections.Sort List    list_=${arrivalTimes_before}  
+    ${minimum_before}    BuiltIn.Set Variable    ${arrivalTimes_before}[0]
+    ${maximum_before}     BuiltIn.Set Variable    ${arrivalTimes_before}[-1]
+     RETURN     ${arrivalTimes_before}
+
+
+Get Arrival time After
+    #SeleniumLibrary.Click Element    locator=//li[contains(text(),"Arrival")]
+    ${buslist_after}    SeleniumLibrary.Get WebElements    locator=//span[contains(@class,"font18 blackText")]
+    @{arrivaltimes_after}    BuiltIn.Create List
+    FOR       ${time}     IN    @{buslist_after}
+   ${arrivaltime}    SeleniumLibrary.Get Element Attribute    ${time}    textContent
+    Collections.Append To List    ${arrivaltimes_after}    ${arrivaltime}
+    END
+    Collections.Sort List    list_=${arrivaltimes_after} 
+    ${minimum_after}      BuiltIn.Set Variable    ${arrivaltimes_after}[0]
+    ${maximum_after}    BuiltIn.Set Variable    ${arrivaltimes_after}[-1]
+    RETURN       ${arrivaltimes_after}
+
+ 
+     
