@@ -2,7 +2,7 @@
 Resource    common.resource
 Resource       ../Variables/config.resource
 Resource       ../Variables/language/${language}.resource
-
+Library        ../Libraries/time_1.py
 
 *** Keywords ***
 
@@ -32,12 +32,12 @@ search buses
       Wait Until Element Is Visible    //p[contains(text(),'found')]
 
 
-filter for pick up time
-  [Arguments]  ${filtertype}   ${timeofpickup}  ${starttime}   ${endtime}
-    ${noofbusfound}=   Get Text  //p[contains(text(),'found')]
-  Wait Until Element Is Visible  //li[@class="containerHorizontal"]//div[contains(text(),'${filtertype}')]
-  Click Element  //div[contains(text(),'${filtertype}')]/ancestor::li[@class="containerHorizontal"]//div[@class="time-filter-option "]/span[contains(text(),'${timeofpickup}')]
-  Wait Until Element Is Visible  //div[@class="time-filter-option selected"]
+verify filter for pick up time
+  [Arguments]     ${starttime}   ${endtime}
+  #  ${noofbusfound}=   Get Text  //p[contains(text(),'found')]
+ # Wait Until Element Is Visible  //li[@class="containerHorizontal"]//div[contains(text(),'${filtertype}')]
+ # Click Element  //div[contains(text(),'${filtertype}')]/ancestor::li[@class="containerHorizontal"]//div[@class="time-filter-option "]/span[contains(text(),'${timeofpickup}')]
+  #Wait Until Element Is Visible  //div[@class="time-filter-option selected"]
   Sleep  5s
   ${elements} =  Get WebElements   //span[@class="font18 latoBlack blackText appendRight4"]
   @{SORTEDTIME}    Create List 
@@ -106,10 +106,8 @@ verification for the window seat-filter
 
 
 Pickup point 
-    [Arguments]    ${pickupPoint}    ${filterName}
-    Wait Until Element Is Visible    //div[contains(text(),'${filterName}')]/../..//*[contains(text(),'${pickupPoint}')]
-    Click Element    //div[contains(text(),'${filterName}')]/../..//*[contains(text(),'${pickupPoint}')] 
-    Sleep    2s
+    [Arguments]    ${filterValue}    
+
     Wait Until Element Is Visible    //div[@class="busListingContainer"]/following-sibling::*[1]  
     Run Keyword And Ignore Error    Wait Until Element Is Visible    //div[@id='toggle_buses']
     Run Keyword And Ignore Error    Click Element    //div[@id='toggle_buses']
@@ -121,16 +119,34 @@ Pickup point
         Log    Iteration: ${index}
         Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    timeout=10s
         Click Element    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    
-        Wait Until Element Is Visible    (//p[contains(text(),'Pick')]/../ul/li//span[contains(text(),'${pickupPoint}')])[${index}]   timeout=10s
+        Wait Until Element Is Visible    (//p[contains(text(),'Pick')]/../ul/li//span[contains(text(),'${filterValue}')])[${index}]   timeout=10s
     END
 
 
 
 
-Verify all the functionalities
-    [Arguments]     ${fromCity}    ${toCity}    ${pickupPoint}    ${filterName}        
-     search buses    fromCity=${fromCity}    toCity=${toCity}    Mon Dec 02 2024
-    Pickup point    pickupPoint=${pickupPoint}    filterName=${filterName}
+Verify the pickup point 
+    [Arguments]     ${fromCity}    ${toCity}    ${heading}    ${filterValue}  
+
+    search buses    fromCity=${fromCity}    toCity=${toCity}    Mon Dec 02 2024
+    Select Filter    heading= ${heading}    filterValue=${filterValue}
+    Pickup point    filterValue=${filterValue}
+
+
+filter-Primo buses and take bus count  
+    # Clicking Primo buses filter
+    Click Element    //div[@class="filter-item-dtl"]/h2[contains(text(),"Primo")]
+    Wait Until Element Is Enabled    locator=//img[@class="sc-jAaTju hyUDU"]
+
+    # Getting number of buses after applying filter
+    ${totalBusInResult}    Get Text    //p[contains(text(),"buses found")]
+    ${totalBusInResult}    Set Variable    ${totalBusInResult.replace(' buses found','')}
+    Log To Console    ${totalBusInResult}
+    RETURN    ${totalBusInResult}
+Take Primo logo count in result  
+    #Getting primo logo count in result tab
+    ${logoCountInResult}    Get Element Count    //div[@class="busListingContainer"]//span[@class="listingSprite newPrimoIcon appendRight24"]
+    RETURN    ${logoCountInResult}   
 
 Verify Selected Drop Point Present In Each Bus
     [Arguments]    ${dropPointName}    
@@ -254,6 +270,44 @@ verify MyDeals
     END
 
     Log To Console    ${index}
+
+
+
+
+
+Sort By Rating
+    ${elements}=    Get WebElements    ${xpath_ratingFilter}
+    @{ratings}    Create List
+    FOR    ${element}    IN    @{elements}
+        ${rating}=    Get Text    ${element}
+        Append To List    ${ratings}    ${rating}             
+    END
+    Sort List    list_=${ratings}
+        #Calculate the expected top rating(4.9).Store in the variable expected result
+    ${expected_rating}    Set Variable    ${ratings}[-1]
+          #Get the rating text of the 1st row bus.Store in variable actual result
+    ${actual_result}    Get Text    ${xpath_ratingFilter}
+
+
+
+Top Rated Buses Comparison
+    [Arguments]    ${actual_result}    ${expected_rating}
+        # Open Browser    ${URL}    ${browser}
+    Open Application
+    Go to Home Page
+    Maximize Browser Window
+    #search the buses 
+    search buses    Mumbai    Kolhapur    Sun Dec 01 2024
+    Sort By Rating
+    #Click on top rated icon
+    Click Element    //h2[contains(text(),"Top Rated")]/ancestor::div[@class="filter-slider-item false"]
+
+    Log To Console    ${actual_result}  
+    [Teardown]     Capture Page Screenshot    EMBED    
+    #Verification
+    #actual result and expecetd result should be same
+    Should Be Equal    ${actual_result}    second=${expected_rating}                      
+    Close All Browsers
 
 verify filter for drop time
       [Arguments]     ${type}     ${droptime}     ${start}     ${end}

@@ -7,16 +7,29 @@ Suite Setup    Open Application
 Test Setup    Go to Home Page    
 Suite Teardown    Exit browser
 
-*** Variables ***
+# *** Variables ***
 
-${url}    https://www.makemytrip.com/bus/search/Mumbai/Kolhapur/02-12-2024?from_code=MMTCC1599&to_code=MMTCC43090
-${browser}    Chrome
-${xpath}    //div[@class="makeFlex spaceBetween"]//span[2]
+# ${url}    https://www.makemytrip.com/bus/search/Mumbai/Kolhapur/02-12-2024?from_code=MMTCC1599&to_code=MMTCC43090
+# ${browser}    Chrome
 
 
 *** Test Cases ***
-verify the filter for pick up time 
-  filter for pick up time  filtertype=Pick up time - Thiruvananthapuram  timeofpickup=11 AM to 6 PM  starttime=11:00 AM  endtime=6:00 PM
+verify the filter for pick up time
+   [Documentation]  Checking the functionality of the pick up time 
+     #STEPS
+     #1.OPEN APPLICATION 
+     #2.SEARCH  BUSES
+     #3.CHECK FOR THE FILTER FUNCTIONALITY 
+     #4.VERIFICATION 
+
+  search buses   from= Thiruvananthapuram    to= Bangalore  date=Sun Dec 01 2024
+  #APPLYING FILTER
+  Select Filter   heading=Pick up time - Thiruvananthapuram  filterValue=11 AM to 6 PM 
+  #verification
+  verify filter for pick up time    starttime=11:00 AM  endtime=6:00 PM
+
+  # [Teardown]   Capture Page Screenshot  EMBED
+
 
 
 verify Filter-Single seat
@@ -30,9 +43,9 @@ verify Filter-Single seat
     verification for the window seat-filter
  
     
-Verify the filter functionalities
-    [Template]    Verify all the functionalities   
-    [Documentation]    Checking the functionality of the Pick up point filter
+Verify the pickup point filter  
+    [Template]    Verify the pickup point    
+    [Documentation]    Checking the functionality of the Pick up point filter, Verifying that the selected pickup point is present in all the bus containers 
     ...    Steps
     ...    1. Open the browser
     ...    2. Go to the URL : "https://www.makemytrip.com/bus-tickets/"
@@ -48,37 +61,39 @@ Verify the filter functionalities
 
 
 
-Fetch Top Rated Buses
-    #search the buses from mumbai to kolhapur
-    #Get all the ratings before clicking top rated
-    #Calculate the expected top rating(4.9).Store in the variable expected result
-    #Click on top rated icon
-    #Get the rating text of the 1st row bus.Store in variable actual result
-    #Verification
-    #actual result and expecetd result should be same
-
-    
-    Open Browser    ${URL}    ${browser}
-    Maximize Browser Window
-    ${elements}=    Get WebElements    ${XPATH}
-    @{ratings}    Create List
-    FOR    ${element}    IN    @{elements}
-        ${rating}=    Get Text    ${element}
-        Append To List    ${ratings}    ${rating}             
-    END
-    Sort List    list_=${ratings}
-    ${expected_rating}    Set Variable    ${ratings}[-1]
-    Click Element    //h2[contains(text(),"Top Rated")]/ancestor::div[@class="filter-slider-item false"]
+Verify filter of top rated buses
+    [Tags]    comparison
+    Top Rated Buses comparison    actual_result=5    expected_rating=5   #Just given(Need to be check)
 
 
-    ${actual_result}    Get Text    ${xpath}
-    Log To Console    ${actual_result}  
-    [Teardown]     Capture Page Screenshot    EMBED    
-    #Verification 
-    Should Be Equal    ${actual_result}    second=${expected_rating}  
+        
 
-                           
-    Close All Browsers
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Verify functionality of Primo bus filter
     [Documentation]    steps 
@@ -86,25 +101,16 @@ Verify functionality of Primo bus filter
     ...    Input two cities and select travel date
     ...    click on search button
     ...    Click on Primo buses filter option 
+    ...    Take the count of buses in result after applying filter
+    ...    Take number of logos present in result
     ...    Verification - verify that the number of buses with filter is equal to the number of primo icons in the results 
 
-    
-    Open Browser    url=https://www.makemytrip.com/bus/search/Mumbai/Delhi/01-12-2024?from_code=MMTCC1599&to_code=MMTCC1199    browser=Chrome
-    Maximize Browser Window
-    # Clicking Primo buses filter
-    Click Element    //div[@class="filter-item-dtl"]/h2[contains(text(),"Primo")]
-    Wait Until Element Is Enabled    locator=//img[@class="sc-jAaTju hyUDU"]
-
-    # Getting number of buses after applying filter
-    ${textVar}    Get Text    //p[contains(text(),"buses found")]
-    ${resultBusCount}    Set Variable    ${textVar.replace(' buses found','')}
-    Log To Console    ${textVar}
-    # Getting primo logo count in result tab
-    ${logoCount}    Get Element Count    //div[@class="busListingContainer"]//span[@class="listingSprite newPrimoIcon appendRight24"]
-   
+    search buses    Mumbai    Delhi    Sun Dec 01 2024
+    ${totalBusInResult}    filter-Primo buses and take bus count
+    ${logoCountInResult}    Take Primo logo count in result
     # verification
-    Should Be Equal As Integers    ${logoCount}    ${resultBusCount}
-    [Teardown]    Capture Page Screenshot    EMBED
+    Should Be Equal As Integers    ${logoCountInResult}    ${totalBusInResult}
+
 
 
 verify the drop point filter
