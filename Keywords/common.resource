@@ -2,6 +2,7 @@
 Library  SeleniumLibrary
 Resource    ../Variables/config.resource
 Library    Collections
+Library   String
 *** Keywords ***
 
 Open Application
@@ -18,7 +19,7 @@ Open Application
 Go to Home Page
     Go To    ${url}
     Wait Until Element Is Visible    //img[@alt="Make My Trip"]    timeout=10s
-
+    
 Select Filter
     [Arguments]   ${heading}    ${filterValue}
     Wait Until Element Is Visible    //div//p[@class="latoBold secondaryTxt font14"]
