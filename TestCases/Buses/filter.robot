@@ -3,6 +3,9 @@ Resource    ./../../Keywords/common.resource
 Resource    ./../../Variables/config.resource
 Library    ./../../Libraries/time_1.py
 Resource   ./../../Keywords/bus.resource
+Suite Setup    Open Application
+Test Setup    Go to Home Page    
+Suite Teardown    Exit browser
 
 # *** Variables ***
 
@@ -11,14 +14,38 @@ Resource   ./../../Keywords/bus.resource
 
 
 *** Test Cases ***
-verify the filter for pick up time 
-  filter for pick up time  filtertype=Pick up time - Thiruvananthapuram  timeofpickup=11 AM to 6 PM  starttime=11:00 AM  endtime=6:00 PM
-Filter verification
-    filter-window seat    filter=Single Seater    filteroption=Single
+verify the filter for pick up time
+   [Documentation]  Checking the functionality of the pick up time 
+     #STEPS
+     #1.OPEN APPLICATION 
+     #2.SEARCH  BUSES
+     #3.CHECK FOR THE FILTER FUNCTIONALITY 
+     #4.VERIFICATION 
+
+  search buses   from= Thiruvananthapuram    to= Bangalore  date=Sun Dec 01 2024
+  #APPLYING FILTER
+  Select Filter   heading=Pick up time - Thiruvananthapuram  filterValue=11 AM to 6 PM 
+  #verification
+  verify filter for pick up time    starttime=11:00 AM  endtime=6:00 PM
+
+  # [Teardown]   Capture Page Screenshot  EMBED
+
+
+
+verify Filter-Single seat
+    #Open Application
+    #Go to Home Page
+    search buses    from=mumbai    to=kolhapur    date=Sun Dec 01 2024
+    ${count1}    get count of window seat filter
+    select filter    Single Seater    Single
+    ${count2}    Get count of the number of results
+    Should Be Equal    ${count1}    ${count2}
+    verification for the window seat-filter
+ 
     
-Verify the filter functionalities
-    [Template]    Verify all the functionalities   
-    [Documentation]    Checking the functionality of the Pick up point filter
+Verify the pickup point filter  
+    [Template]    Verify the pickup point    
+    [Documentation]    Checking the functionality of the Pick up point filter, Verifying that the selected pickup point is present in all the bus containers 
     ...    Steps
     ...    1. Open the browser
     ...    2. Go to the URL : "https://www.makemytrip.com/bus-tickets/"
@@ -74,25 +101,60 @@ Verify functionality of Primo bus filter
     ...    Input two cities and select travel date
     ...    click on search button
     ...    Click on Primo buses filter option 
+    ...    Take the count of buses in result after applying filter
+    ...    Take number of logos present in result
     ...    Verification - verify that the number of buses with filter is equal to the number of primo icons in the results 
 
-    
-    Open Browser    url=https://www.makemytrip.com/bus/search/Mumbai/Delhi/01-12-2024?from_code=MMTCC1599&to_code=MMTCC1199    browser=Chrome
-    Maximize Browser Window
-    # Clicking Primo buses filter
-    Click Element    //div[@class="filter-item-dtl"]/h2[contains(text(),"Primo")]
-    Wait Until Element Is Enabled    locator=//img[@class="sc-jAaTju hyUDU"]
-
-    # Getting number of buses after applying filter
-    ${textVar}    Get Text    //p[contains(text(),"buses found")]
-    ${resultBusCount}    Set Variable    ${textVar.replace(' buses found','')}
-    Log To Console    ${textVar}
-    # Getting primo logo count in result tab
-    ${logoCount}    Get Element Count    //div[@class="busListingContainer"]//span[@class="listingSprite newPrimoIcon appendRight24"]
-   
+    search buses    Mumbai    Delhi    Sun Dec 01 2024
+    ${totalBusInResult}    filter-Primo buses and take bus count
+    ${logoCountInResult}    Take Primo logo count in result
     # verification
-    Should Be Equal As Integers    ${logoCount}    ${resultBusCount}
-    [Teardown]    Capture Page Screenshot    EMBED
+    Should Be Equal As Integers    ${logoCountInResult}    ${totalBusInResult}
+
+
+
+verify the drop point filter
+    [Documentation]   checking the functionality of filter
+    ...    maximize the  window 
+    ...    wait for the total buses without filtering
+    ...    goto leftside navbar and select the location from drop point filter
+    ...    wait for the updated result
+    ...    for verify- go through all the buscard tab and click on pickups and drops then check for that city in drop points
+    ...    verify the city contain in that field
+    
+    #step 
+    Select Filter    
+    ...    Drop point            
+    ...    Nerul
+    
+    #verification
+    Verify Selected Drop Point Present In Each Bus    
+    ...    Nerul
+    
+
+
+
+
+verify the drop point filter
+    [Documentation]   checking the functionality of filter
+    ...    maximize the  window 
+    ...    wait for the total buses without filtering
+    ...    goto leftside navbar and select the location from drop point filter
+    ...    wait for the updated result
+    ...    for verify- go through all the buscard tab and click on pickups and drops then check for that city in drop points
+    ...    verify the city contain in that field
+    
+    #step 
+    Select Filter    
+    ...    Drop point            
+    ...    Nerul
+    
+    #verification
+    Verify Selected Drop Point Present In Each Bus    
+    ...    Nerul
+    
+
+
 
 
 
