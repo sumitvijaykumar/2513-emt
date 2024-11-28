@@ -45,9 +45,9 @@ verify Filter-Single seat
     verification for the window seat-filter
  
     
-Verify the filter functionalities
-    [Template]    Verify all the functionalities   
-    [Documentation]    Checking the functionality of the Pick up point filter
+Verify the pickup point filter  
+    [Template]    Verify the pickup point    
+    [Documentation]    Checking the functionality of the Pick up point filter, Verifying that the selected pickup point is present in all the bus containers 
     ...    Steps
     ...    1. Open the browser
     ...    2. Go to the URL : "https://www.makemytrip.com/bus-tickets/"

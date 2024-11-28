@@ -106,10 +106,8 @@ verification for the window seat-filter
 
 
 Pickup point 
-    [Arguments]    ${pickupPoint}    ${filterName}
-    Wait Until Element Is Visible    //div[contains(text(),'${filterName}')]/../..//*[contains(text(),'${pickupPoint}')]
-    Click Element    //div[contains(text(),'${filterName}')]/../..//*[contains(text(),'${pickupPoint}')] 
-    Sleep    2s
+    [Arguments]    ${filterValue}    
+
     Wait Until Element Is Visible    //div[@class="busListingContainer"]/following-sibling::*[1]  
     Run Keyword And Ignore Error    Wait Until Element Is Visible    //div[@id='toggle_buses']
     Run Keyword And Ignore Error    Click Element    //div[@id='toggle_buses']
@@ -121,16 +119,18 @@ Pickup point
         Log    Iteration: ${index}
         Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    timeout=10s
         Click Element    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    
-        Wait Until Element Is Visible    (//p[contains(text(),'Pick')]/../ul/li//span[contains(text(),'${pickupPoint}')])[${index}]   timeout=10s
+        Wait Until Element Is Visible    (//p[contains(text(),'Pick')]/../ul/li//span[contains(text(),'${filterValue}')])[${index}]   timeout=10s
     END
 
 
 
 
-Verify all the functionalities
-    [Arguments]     ${fromCity}    ${toCity}    ${pickupPoint}    ${filterName}        
-     search buses    fromCity=${fromCity}    toCity=${toCity}    Mon Dec 02 2024
-    Pickup point    pickupPoint=${pickupPoint}    filterName=${filterName}
+Verify the pickup point 
+    [Arguments]     ${fromCity}    ${toCity}    ${heading}    ${filterValue}  
+
+    search buses    fromCity=${fromCity}    toCity=${toCity}    Mon Dec 02 2024
+    Select Filter    heading= ${heading}    filterValue=${filterValue}
+    Pickup point    filterValue=${filterValue}
 
 
 filter-Primo buses and take bus count  
