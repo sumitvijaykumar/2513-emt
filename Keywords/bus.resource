@@ -80,7 +80,7 @@ filter-window seat
     ...    5,verification 2-verify that all the result have the window/single seat
 
         
-    Open Browser    url=https://www.makemytrip.com/bus/search/Mumbai/Kolhapur/23-11-2024?from_code=MMTCC1599&to_code=MMTCC43090    browser=chrome
+    Open Browser    url=https://www.makemytrip.com/bus/search/Mumbai/Kolhapur/23-12-2024?from_code=MMTCC1599&to_code=MMTCC43090    browser=chrome
     Maximize Browser Window
     Wait Until Element Is Visible    busList
 
@@ -188,3 +188,41 @@ verify MyDeals
     END
 
     Log To Console    ${index}
+
+
+
+
+
+Sort By Rating
+    ${elements}=    Get WebElements    ${xpath_ratingFilter}
+    @{ratings}    Create List
+    FOR    ${element}    IN    @{elements}
+        ${rating}=    Get Text    ${element}
+        Append To List    ${ratings}    ${rating}             
+    END
+    Sort List    list_=${ratings}
+        #Calculate the expected top rating(4.9).Store in the variable expected result
+    ${expected_rating}    Set Variable    ${ratings}[-1]
+          #Get the rating text of the 1st row bus.Store in variable actual result
+    ${actual_result}    Get Text    ${xpath_ratingFilter}
+
+
+
+Top Rated Buses Comparison
+    [Arguments]    ${actual_result}    ${expected_rating}
+        # Open Browser    ${URL}    ${browser}
+    Open Application
+    Go to Home Page
+    Maximize Browser Window
+    #search the buses 
+    search buses    Mumbai    Kolhapur    Sun Dec 01 2024
+    Sort By Rating
+    #Click on top rated icon
+    Click Element    //h2[contains(text(),"Top Rated")]/ancestor::div[@class="filter-slider-item false"]
+
+    Log To Console    ${actual_result}  
+    [Teardown]     Capture Page Screenshot    EMBED    
+    #Verification
+    #actual result and expecetd result should be same
+    Should Be Equal    ${actual_result}    second=${expected_rating}                      
+    Close All Browsers
