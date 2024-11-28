@@ -33,8 +33,18 @@ Verify if rating filter works
     Should Be Equal As Strings    first=${expected_TopRatedBus}    second=${actual_TopRatedBus}
     
     
+sort prices
+    [Documentation]    open url
+    ...    get common x path of all elements
+    ...    get all elements into a variable
+    ...    create a list
+    ...    use for loop to append all enments to list
+    ...    sort list
+    ...    get maximum and minimum values from the list 
 
-
+    search buses    from=mumbai    to=kolhapur    date=Sun Dec 01 2024
+    get prices
+    sort by prices    pricelist=${pricelist}
 
 
     

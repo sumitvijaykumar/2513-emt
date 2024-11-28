@@ -254,3 +254,28 @@ verify MyDeals
     END
 
     Log To Console    ${index}
+
+#sort by prices
+get prices
+    Wait Until Element Is Visible    //div[@class="makeFlex hrtlCenter"]//p[contains(text(),"SORT BY")]
+    ${allelements}    Get WebElements    //span[@id="price"]
+
+    @{pricelist}    Create List
+    FOR    ${element}    IN    @{allelements}
+        
+        ${price}    Get Element Attribute    ${element}    textContent
+        
+        #${price}    Replace String    ${price}    ,    ${EMPTY}
+        ${price}    Convert To Integer    ${price.replace(',','')}
+        Append To List    ${pricelist}    ${price}  
+    
+    END
+    log    ${pricelist}
+
+sort by prices
+    [Arguments]    ${pricelist}
+    Sort List    list_=${pricelist}
+    Log    ${pricelist}  
+    
+    ${maximumprice}    Set Variable    ${pricelist}[-1]
+    ${minimumprice}    Set Variable    ${pricelist}[0]
