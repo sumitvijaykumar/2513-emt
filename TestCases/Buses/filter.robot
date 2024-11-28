@@ -9,14 +9,29 @@ Suite Teardown    Exit browser
 
 *** Variables ***
 
-${url}    https://www.makemytrip.com/bus/search/Mumbai/Kolhapur/02-12-2024?from_code=MMTCC1599&to_code=MMTCC43090
+#${url}    https://www.makemytrip.com/bus/search/Mumbai/Kolhapur/02-12-2024?from_code=MMTCC1599&to_code=MMTCC43090
+${url}   https://www.makemytrip.com/bus-tickets/
 ${browser}    Chrome
 ${xpath}    //div[@class="makeFlex spaceBetween"]//span[2]
 
 
 *** Test Cases ***
-verify the filter for pick up time 
-  filter for pick up time  filtertype=Pick up time - Thiruvananthapuram  timeofpickup=11 AM to 6 PM  starttime=11:00 AM  endtime=6:00 PM
+verify the filter for pick up time
+   [Documentation]  Checking the functionality of the pick up time 
+     #STEPS
+     #1.OPEN APPLICATION 
+     #2.SEARCH  BUSES
+     #3.CHECK FOR THE FILTER FUNCTIONALITY 
+     #4.VERIFICATION 
+
+  search buses   from= Thiruvananthapuram    to= Bangalore  date=Sun Dec 01 2024
+  #APPLYING FILTER
+  Select Filter   heading=Pick up time - Thiruvananthapuram  filterValue=11 AM to 6 PM 
+  #verification
+  verify filter for pick up time    starttime=11:00 AM  endtime=6:00 PM
+
+  # [Teardown]   Capture Page Screenshot  EMBED
+
 
 
 verify Filter-Single seat
