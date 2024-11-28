@@ -202,3 +202,13 @@ Sort By Arrival
 
 Verify Mydeals in buses
     [Tags]    Bus    Search       
+
+
+
+Verify Clear Filter Functionality
+    [Documentation]    Verify that the filters are applied, reset correctly
+    Verify Filter Attributes
+    Test Filter Functionality
+    Verify Filter Applied
+    Clear Filters
+    Verify Filter Reset
