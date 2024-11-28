@@ -204,7 +204,7 @@ Verify Mydeals in buses
     [Tags]    Bus    Search       
 
 
-*** Test Cases ***
+
 Verify Clear Filter Functionality
     [Documentation]    Verify that the filters are applied, reset correctly
     Verify Filter Attributes
