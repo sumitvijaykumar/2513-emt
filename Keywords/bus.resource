@@ -308,3 +308,11 @@ Top Rated Buses Comparison
     #actual result and expecetd result should be same
     Should Be Equal    ${actual_result}    second=${expected_rating}                      
     Close All Browsers
+Get Ac Bus count before applying filter
+    
+     # count of Ac bus before applying filter
+     ${expected_AcBusCount}=  Get Element Count  locator=//p[(contains(text(), 'AC') or contains(text(), 'A/C') or contains(text(), 'A/c')) and not(contains(text(), 'Non') or contains(text(), 'NON') or contains(text(), 'non'))]
+     #apply Ac filter
+     
+     ${count}      Get Element Count   locator=//div[contains(text(),'AC')]/../..//span[contains(text(),'AC')]
+     RETURN  ${count}
