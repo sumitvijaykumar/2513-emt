@@ -127,7 +127,7 @@ Pickup point
 
 
 
-Verify all the functionalities
+Verify the pickup point 
     [Arguments]     ${fromCity}    ${toCity}    ${pickupPoint}    ${filterName}        
      search buses    fromCity=${fromCity}    toCity=${toCity}    Mon Dec 02 2024
     Pickup point    pickupPoint=${pickupPoint}    filterName=${filterName}
