@@ -79,12 +79,13 @@ Verify functionality of Primo bus filter
     ...    Take the count of buses in result after applying filter
     ...    Take number of logos present in result
     ...    Verification - verify that the number of buses with filter is equal to the number of primo icons in the results 
-
+    # Steps
     search buses    Mumbai    Delhi    Sun Dec 01 2024
-    ${totalBusInResult}    filter-Primo buses and take bus count
-    ${logoCountInResult}    Take Primo logo count in result
-    # verification
-    Should Be Equal As Integers    ${logoCountInResult}    ${totalBusInResult}
+    Apply Primo bus filter
+    ${ExpectedPrimoCount}    Get Number Of Search Results
+    ${ActualPrimoCount}    Take Primo logo count in result
+    # Verification
+    Should Be Equal As Integers    ${ExpectedPrimoCount}    ${ActualPrimoCount}
 
 
 
