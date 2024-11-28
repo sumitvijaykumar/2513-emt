@@ -197,3 +197,12 @@ Sort By Arrival
 Verify Mydeals in buses
     [Tags]    Bus    Search   
     verify MyDeals    
+
+
+
+verify the filter for drop time
+     search buses     from=Mumbai     to=Bangalore     date=Wed Dec 04 2024
+     #Select the filter
+     Select Filter     heading=Drop time - Bangalore     filterValue=6 AM to 11 AM
+     #verification
+     verify filter for drop time    type=Drop time - Bangalore     droptime=6 AM to 11 AM     start=06:00 AM     end=11:00 AM

@@ -254,3 +254,47 @@ verify MyDeals
     END
 
     Log To Console    ${index}
+
+verify filter for drop time
+      [Arguments]     ${type}     ${droptime}     ${start}     ${end}
+     ${noofbuses}    Get Text    //p[contains(text(),'found')]
+     Wait Until Element Is Visible     //li[@class="containerHorizontal"]//div[contains(text(),'${type}')]
+     Click Element     //div[contains(text(),'${type}')]/ancestor::li[@class="containerHorizontal"]//div[@class="time-filter-option "]/span[contains(text(),'${droptime}')]
+     Wait Until Element Is Visible     //div[@class="time-filter-option "]
+     Sleep     5s
+     # Capture Page Screenshot
+     # Pause Execution
+     ${list}     Get WebElements     locator=//span[@class="font18 blackText appendRight4 latoRegular"]
+     @{timesort}     Create List
+
+     FOR  ${element}  IN  @{list}
+          ${time}=  Get Text  ${element}
+          Append To List     ${timesort}     ${time}
+          Log To Console     ${time}
+     END
+
+     Sort List     ${timesort}
+     Log To Console     ${timesort}
+
+     ${starttime}    convert_to_24_hr_format     ${start}   
+     ${starttime_24}=    Replace String    ${starttime}    :     ${EMPTY}
+  
+     ${endtime}      convert_to_24_hr_format  ${end}  
+     ${endtime_24}=    Replace String    ${endtime}    :     ${EMPTY}
+
+
+     ${firsttime}  Get From List  list_=${timesort}  index=0
+ 
+     ${first_time}=    Replace String    ${firsttime}    :     ${EMPTY}
+
+  
+     ${lasttime}   Get From List   list_=${timesort}  index=-1
+ 
+     ${last_time}=    Replace String    ${lasttime}    :     ${EMPTY}
+     ${first_time}     Convert To Integer     ${first_time}
+     ${starttime_24}     Convert To Integer     ${starttime_24}     
+     Should Be True  ${first_time} >= ${starttime_24}
+     ${last_time}     Convert To Integer     ${last_time}
+     ${endtime}     Convert To Integer     ${endtime_24}
+     Should Be True  ${last_time} <= ${endtime_24}
+    
