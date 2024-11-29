@@ -279,3 +279,24 @@ sort by prices
     
     ${maximumprice}    Set Variable    ${pricelist}[-1]
     ${minimumprice}    Set Variable    ${pricelist}[0]
+    RETURN    ${maximumprice}    ${minimumprice}
+price verification
+    [Arguments]       ${maximumprice}    ${minimumprice}    ${total}
+    Click Element    //ul/li[contains(text(),'Cheapest')]
+    ${firstvalue}    Get Text    (//span[@id="price"])[1]    #price of the first result 
+
+    ${lastvalue}    Get Text    locator=(//span[@id="price"])[${total}]    #price of the last value
+
+    Should Be Equal As Integers    ${firstvalue.replace(',','')}    ${minimumprice}
+    Should Be Equal As Integers    first=${lastvalue.replace(',','')}    second=${maximumprice}
+
+    Sleep    2s
+
+
+    Click Element    //ul/li[contains(text(),'Cheapest')]
+    ${firstvalue}    Get Text    (//span[@id="price"])[1]    #price of the first result 
+
+    ${lastvalue}    Get Text    locator=(//span[@id="price"])[${total}]    #price of the last value
+
+    Should Be Equal As Integers    ${firstvalue.replace(',','')}    ${maximumprice}
+    Should Be Equal As Integers    first=${lastvalue.replace(',','')}    second=${minimumprice}

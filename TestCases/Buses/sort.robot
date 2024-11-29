@@ -45,6 +45,7 @@ sort prices
     search buses    from=mumbai    to=kolhapur    date=Sun Dec 01 2024
     get prices
     sort by prices    pricelist=${pricelist}
+    price verification    maximumprice=${maximumprice}    minimumprice=${minimumprice}    total=${total}
 
 
     
