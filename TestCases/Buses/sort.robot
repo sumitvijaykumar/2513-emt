@@ -32,6 +32,31 @@ Verify if rating filter works
     #Verification
     Should Be Equal As Strings    first=${expected_TopRatedBus}    second=${actual_TopRatedBus}
     
+
+
+
+Sort the bus by arrival
+
+  [Documentation]
+  #steps
+  #open the browser
+  #Go to Make my Trip
+  #Search from Mumbai to Delhi
+  #Sort the Result By Arrival
+  #Get the Arrival times
+  #Verification
+
+
+   search buses   Mumbai    Delhi    Sun Dec 01 2024
+   #step 1 sort by arrival
+   Sort Search Result with   Arrival
+   ${minimum}    ${maximum}   Get Arrival Times
+
+   #verification
+
+   Should Be True    ${minimum}<=${maximum}
+    
+
     
 
 
