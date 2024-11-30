@@ -133,20 +133,15 @@ Verify the pickup point
     Pickup point    filterValue=${filterValue}
 
 
-filter-Primo buses and take bus count  
+Apply Primo bus filter
     # Clicking Primo buses filter
     Click Element    //div[@class="filter-item-dtl"]/h2[contains(text(),"Primo")]
     Wait Until Element Is Enabled    locator=//img[@class="sc-jAaTju hyUDU"]
 
-    # Getting number of buses after applying filter
-    ${totalBusInResult}    Get Text    //p[contains(text(),"buses found")]
-    ${totalBusInResult}    Set Variable    ${totalBusInResult.replace(' buses found','')}
-    Log To Console    ${totalBusInResult}
-    RETURN    ${totalBusInResult}
 Take Primo logo count in result  
     #Getting primo logo count in result tab
-    ${logoCountInResult}    Get Element Count    //div[@class="busListingContainer"]//span[@class="listingSprite newPrimoIcon appendRight24"]
-    RETURN    ${logoCountInResult}   
+    ${ActualPrimoCount}    Get Element Count    //div[@class="busListingContainer"]//span[@class="listingSprite newPrimoIcon appendRight24"]
+    RETURN    ${ActualPrimoCount}   
 
 Verify Selected Drop Point Present In Each Bus
     [Arguments]    ${dropPointName}    
