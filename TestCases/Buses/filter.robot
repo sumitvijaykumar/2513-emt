@@ -201,4 +201,10 @@ Sort By Arrival
 
 
 Verify Mydeals in buses
-    [Tags]    Bus    Search       
+    [Tags]    Bus    Search  
+
+
+Verify the filter functionalities
+    Search buses    from city=Mumbai    tocity=Kolhapur
+    Select Filter     heading=Travel Operators    filterValue=VRL Travels        
+    Verify travel operators    filterValue=VRL Travels
