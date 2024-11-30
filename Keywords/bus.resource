@@ -307,4 +307,99 @@ Top Rated Buses Comparison
     #Verification
     #actual result and expecetd result should be same
     Should Be Equal    ${actual_result}    second=${expected_rating}                      
-    Close All Browsers
+    Close All Browsers   
+Taking Value Before Sort
+    
+      [Documentation]    Checking the functionality of the fastest filter
+      
+    ...              STEPS
+    ...    1.Open the Browser
+    ...    2.Go to the URl:https://www.makemytrip.com/bus-tickets/
+    ...    3.Maximize the browser
+    ...    4.Enter the location to and from and date of travel and search
+    ...    5.Wait until new fields appear
+    ...    6.Go to the tob navbar and click on Fastest filter
+    ...    7.Wait until the updated result to appear
+    ...    8.Get list of time of all bus 
+    ...    9.Comp
+ 
+
+  
+  
+
+    Wait Until Element Is Visible    //div[@class="sortViewContainer makeFlex spaceBetween hrtlCenter"]    timeout=10s
+    
+    
+    
+    Wait Until Element Is Visible    //div[@class="line-border-top"]/following-sibling::div[@class="font14 secondaryTxt"]   timeout=15s
+    ${xpath}    Set Variable    //div[@class="line-border-top"]/following-sibling::div[@class="font14 secondaryTxt"]   
+    
+    ${elements_beforesort}=    Get WebElements    ${xpath}
+    
+  #Create a list of duration before applying filter
+    @{List_of_time}    Create List
+    FOR  ${element}  IN  @{elements_beforesort}
+    ${time}=    Get Text    ${element}
+    Append To List    ${List_of_time}    ${time}
+    END
+    
+    
+    @{output_list}    Create List
+    FOR  ${element}  IN  @{List_of_time}
+    ${cleaned_element_beforesort}=    Replace String    ${element}    hrs    ${EMPTY}
+    ${cleaned_element_beforesort}=    Replace String    ${cleaned_element_beforesort}    mins    ${EMPTY}
+    ${cleaned_element_beforesort}=    Replace String    ${cleaned_element_beforesort}    ${SPACE}    ${EMPTY}
+    
+    Append To List    ${output_list}   ${cleaned_element_beforesort}
+    END
+    
+    Sort List    list_=${output_list}
+    ${max_value_before_sort}    Get From List    list_=${output_list}    index=-1
+    ${min_value_before_sort}    Get From List    list_=${output_list}    index=0
+
+    RETURN    ${min_value_before_sort}    ${max_value_before_sort}
+    
+Apply filter Fastest
+# Sort time value after applyinf fastest filter
+    Click Element    //div[@class="sortViewContainer makeFlex spaceBetween hrtlCenter"]//li[contains(text(),'Fastest')]
+
+Get value after sort
+    ${xpath2}    Set Variable    //div[@class="font14 secondaryTxt"]
+    ${elements}=    Get WebElements    ${xpath2}
+
+     @{SORTEDTIME}    Create List 
+     FOR  ${element}  IN  @{elements}
+     ${time}=  Get Text  ${element}
+     Append To List    ${SORTEDTIME}    ${time}
+     END
+   
+     @{output_list_filter}    Create List
+     FOR  ${element}  IN  @{SORTEDTIME}
+     ${cleaned_elements}=    Replace String    ${element}    hrs    ${EMPTY}
+     ${cleaned_elements}=    Replace String    ${cleaned_elements}    mins    ${EMPTY}
+     ${cleaned_elements}=    Replace String    ${cleaned_elements}    ${SPACE}    ${EMPTY} 
+
+     Append To List    ${output_list_filter}    ${cleaned_elements}
+    END
+    Log To Console    ${output_list_filter}
+   
+   
+    ${max_value_after_sort}    Get From List    list_=${output_list_filter}    index=-1
+    ${min_value_after_sort}    Get From List    list_=${output_list_filter}    index=0
+
+    RETURN    ${min_value_after_sort}    ${max_value_after_sort}
+
+   
+   
+   
+    
+
+
+
+
+   
+
+   
+   
+  
+   
