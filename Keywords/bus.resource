@@ -4,6 +4,11 @@ Resource       ../Variables/config.resource
 Resource       ../Variables/language/${language}.resource
 Library        ../Libraries/time_1.py
 
+
+
+*** Variables ***
+${ksrtc bus}    //div[@id='toggle_buses']    
+${pickup & drop button}    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]
 *** Keywords ***
 
 search buses
@@ -109,16 +114,16 @@ Pickup point
     [Arguments]    ${filterValue}    
 
     Wait Until Element Is Visible    //div[@class="busListingContainer"]/following-sibling::*[1]  
-    Run Keyword And Ignore Error    Wait Until Element Is Visible    //div[@id='toggle_buses']
-    Run Keyword And Ignore Error    Click Element    //div[@id='toggle_buses']
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    ${ksrtc bus}
+    Run Keyword And Ignore Error    Click Element    ${ksrtc bus}
     ${bus_count_element}=  Get Text  //p[contains(text(),'found')]
     ${bus_count}=  Evaluate  '${bus_count_element}'.split(' ')[0]
     Log  Bus Count: ${bus_count}
-    Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]
+    Wait Until Element Is Visible    ${pickup & drop button}
     FOR    ${index}    IN RANGE    1    ${bus_count}+1
         Log    Iteration: ${index}
-        Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    timeout=10s
-        Click Element    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]    
+        Wait Until Element Is Visible    ${pickup & drop button}    timeout=10s
+        Click Element    ${pickup & drop button}    
         Wait Until Element Is Visible    (//p[contains(text(),'Pick')]/../ul/li//span[contains(text(),'${filterValue}')])[${index}]   timeout=10s
     END
 
