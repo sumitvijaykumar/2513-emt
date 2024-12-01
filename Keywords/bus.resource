@@ -4,19 +4,28 @@ Resource       ../Variables/config.resource
 Resource       ../Variables/language/${language}.resource
 Library        ../Libraries/time_1.py
 
+*** Variables ***
+${fromCityField}=    //span[@data-cy="fromCity"]   # Xpath of Clickable part of from city text field
+${fromCityInput}=    //input[@placeholder="From"]  # Xpath of Input part of from city text field
+${toCityInput}=      //input[@placeholder="To"]    # Xpath of Input part of to city text field
+${searchBtnXpath}=    search_button                # Xpath of search button
+${resultBusFound}=    //p[@class="latoBold secondaryTxt font14"]   # Xpath of paragraph of No of buses found (eg: 188 buses Found)
+
+${allBusRatings}=    //span[@class="sc-kGXeez bfoMHl"]   #Xpath of ratings of all buses
+
 *** Keywords ***
 
 search buses
     [Arguments]    ${from}    ${to}    ${date}
-    Click Element    locator=//span[@data-cy="fromCity"]
-    Wait Until Element Is Visible    locator=//input[@placeholder="From"] 
-    Input Text    locator=//input[@placeholder="From"]    text=${from}
+    Click Element    locator=${fromCityField}
+    Wait Until Element Is Visible    locator=${fromCityInput} 
+    Input Text    locator=${fromCityInput}    text=${from}
     Wait Until Element Is Visible    locator=(//ul[contains(@class,"autosuggest")]//span[contains(text(),"${from}")])[1]
     Click Element    locator=(//ul[contains(@class,"autosuggest")]//span[contains(text(),"${from}")])[1]
 
     #Click Element    locator=//span[@data-cy="toCity"]
     #Wait Until Element Is Visible    locator=//input[@placeholder="To"] 
-    Input Text    locator=//input[@placeholder="To"]    text=${to}
+    Input Text    locator=${toCityInput}    text=${to}
     Wait Until Element Is Visible    locator=(//ul[contains(@class,"autosuggest")]//span[contains(text(),"${to}")])[1]
     Click Element    locator=(//ul[contains(@class,"autosuggest")]//span[contains(text(),"${to}")])[1]
     #Wait Until Element Is Visible    locator=//div[@aria-selected="true"]    timeout=5s
@@ -24,12 +33,12 @@ search buses
     Click Element    locator=//div[@class="DayPicker-Day" and @aria-label="${date}"]
 
     #Click Element    locator=//div[@aria-selected="true"]
-    Click Button    locator=search_button
+    Click Button    locator=${searchBtnXpath}
 
     ###verification
-    ${result}    Get Text    locator=//p[@class="latoBold secondaryTxt font14"]
+    ${result}    Get Text    locator=${resultBusFound}
     Log To Console    message=${result}
-      Wait Until Element Is Visible    //p[contains(text(),'found')]
+      Wait Until Element Is Visible    ${resultBusFound}
 
 
 verify filter for pick up time
@@ -222,8 +231,7 @@ Verify Selected Drop Point Present In Each Bus
         # Log    ${index}
         END
 Sort Bus Rating
-    [Arguments]    ${allBusRatings}
-    Wait Until Element Is Visible    locator=//p[@class="latoBold secondaryTxt font14"]
+    Wait Until Element Is Visible    locator=${resultBusFound}
     @{ratings}    Create List
     ${elements}=    Get WebElements    ${allBusRatings}
     FOR    ${element}    IN    @{elements}
@@ -233,8 +241,7 @@ Sort Bus Rating
 
     END
     Sort List    list_=${ratings}
-    ${length}    Get Length    item=${ratings}
-    ${top_rating}    Set Variable    ${ratings}[${length-1}]    
+    ${top_rating}    Set Variable    ${ratings}[-1]   
     RETURN    ${top_rating}
 
 Sort Search Result with
@@ -243,7 +250,6 @@ Sort Search Result with
     Click Element    locator=//li[contains(text(),"${sorting_parameter}")]
 
 Get First Bus Rating
-    [Arguments]    ${allBusRatings}
     Wait Until Element Is Visible    locator=(${allBusRatings})[1]    timeout=5s
     ${top}    Get Text    locator=(${allBusRatings})[1] 
     RETURN    ${top}

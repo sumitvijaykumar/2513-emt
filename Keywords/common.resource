@@ -3,6 +3,12 @@ Library  SeleniumLibrary
 Resource    ../Variables/config.resource
 Library    Collections
 Library   String
+
+*** Variables ***
+${closePopUp}=    //span[@class="commonModal__close"]    # Xpath of close button of the Pop-up in the homepage
+${mmtLogoimage}=    //img[@alt="Make My Trip"]    # Xpath of the makemytrip logo image
+
+
 *** Keywords ***
 
 Open Application
@@ -11,14 +17,14 @@ Open Application
     ...    It can be used in test setup
     Open Browser     url=${url}    browser=${browser}
     Maximize Browser Window
-    Wait Until Element Is Visible    locator=//span[@class="commonModal__close"]    timeout=10s
-    Click Element    locator=//span[@class="commonModal__close"]
+    Wait Until Element Is Visible    locator=${closePopUp}    timeout=10s
+    Click Element    locator=${closePopUp}
     
     # wait until logo is visible
 
 Go to Home Page
     Go To    ${url}
-    Wait Until Element Is Visible    //img[@alt="Make My Trip"]    timeout=10s
+    Wait Until Element Is Visible    ${mmtLogoimage}    timeout=10s
     
 Select Filter
     [Arguments]   ${heading}    ${filterValue}

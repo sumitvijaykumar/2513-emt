@@ -8,8 +8,8 @@ Suite Teardown    Exit browser
 
 
 
-*** Variables ***
-${allBusRatings}=    //span[@class="sc-kGXeez bfoMHl"]
+
+
 
 *** Test Cases ***
 Verify if rating filter works 
@@ -24,10 +24,10 @@ Verify if rating filter works
     # ...     check if the 1st result has the highest rating
     
     search buses    Mumbai    Delhi    Sun Dec 01 2024
-    ${expected_TopRatedBus}    Sort Bus Rating    ${allBusRatings}
+    ${expected_TopRatedBus}    Sort Bus Rating    
     #Step 1: sort by rating
     Sort Search Result with    Rating 
-    ${actual_TopRatedBus}    Get First Bus Rating    ${allBusRatings}    
+    ${actual_TopRatedBus}    Get First Bus Rating       
 
     #Verification
     Should Be Equal As Strings    first=${expected_TopRatedBus}    second=${actual_TopRatedBus}
