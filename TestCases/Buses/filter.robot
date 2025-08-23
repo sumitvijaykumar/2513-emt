@@ -66,6 +66,18 @@ Verify filter of top rated buses
     Top Rated Buses comparison    actual_result=5    expected_rating=5   #Just given(Need to be check)
 
 
+Verify functionality of sort by Fastest
+
+    search buses    Mumbai    Goa    date=Sun Dec 01 2024
+    ${min_expected}    ${max_expected}    Taking Value Before Sort   
+    Apply filter Fastest
+    ${min_actual}    ${max_actual}    Get value after sort
+    #   Verification
+    Should Be Equal    first=${min_expected}    second=${min_actual}
+    Should Be Equal    first=${max_expected}    second=${max_actual}
+    
+
+
         
 
 
