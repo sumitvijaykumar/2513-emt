@@ -308,3 +308,63 @@ Top Rated Buses Comparison
     #actual result and expecetd result should be same
     Should Be Equal    ${actual_result}    second=${expected_rating}                      
     Close All Browsers
+
+Verify Filter Attributes
+#filter buttons should be inactive initially
+    Wait Until Element Is Visible    //span[normalize-space(text())="AC"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]
+    Element Attribute Value Should Be    //span[normalize-space(text())="AC"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]    class    horiFilterBtn appendRight12${SPACE}
+    Element Attribute Value Should Be    //span[normalize-space(text())="Sleeper"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]    class    horiFilterBtn appendRight12${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Pick up point - Mumbai"]/../..//span[normalize-space(text())="Borivali East"]/..    class    makeFlex ${SPACE}vrtlCenter pushLeft${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Pick up time - Mumbai"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..    class    time-filter-option${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Travel Operators"]/../..//span[normalize-space(text())='Hans Travels (I) Private Limited']/..    class    makeFlex ${SPACE}vrtlCenter pushLeft${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Drop time - Delhi"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..    class    time-filter-option${SPACE}
+
+Test Filter Functionality
+    [Documentation]    Apply filters one by one and verify their application.
+    Wait Until Element Is Visible    //span[normalize-space(text())="AC"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]    timeout=20s
+    Scroll Element Into View    //span[normalize-space(text())="AC"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]
+    Click Element    //span[normalize-space(text())="AC"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]
+    Wait Until Element Is Visible    //span[normalize-space(text())="Sleeper"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]
+    Click Element    //span[normalize-space(text())="Sleeper"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]
+    Scroll Element Into View         //div[normalize-space(text())="Pick up point - Mumbai"]/../..//span[normalize-space(text())="Borivali East"]/..
+    Wait Until Element Is Visible    //div[normalize-space(text())="Pick up point - Mumbai"]/../..//span[normalize-space(text())="Borivali East"]/..
+    Click Element    //div[normalize-space(text())="Pick up point - Mumbai"]/../..//span[normalize-space(text())="Borivali East"]/..
+    Wait Until Element Is Visible    //div[normalize-space(text())="Pick up time - Mumbai"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..
+    Sleep    0.2s
+    Click Element    //div[normalize-space(text())="Pick up time - Mumbai"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..
+    Wait Until Element Is Visible    //div[normalize-space(text())="Travel Operators"]/../..//span[normalize-space(text())="Hans Travels (I) Private Limited"]/..
+    Click Element    //div[normalize-space(text())="Travel Operators"]/../..//span[normalize-space(text())="Hans Travels (I) Private Limited"]/..
+    Wait Until Element Is Visible    //div[normalize-space(text())="Drop time - Delhi"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..
+    Sleep    0.2s
+    Click Element    //div[normalize-space(text())="Drop time - Delhi"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..
+
+Verify Filter Applied
+#verify whether the filter buttons are active
+    Element Attribute Value Should Be    //span[normalize-space(text())="AC"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]    class    horiFilterBtn appendRight12 activeSlot
+    Element Attribute Value Should Be    //span[normalize-space(text())="Sleeper"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]    class    horiFilterBtn appendRight12 activeSlot
+    Element Attribute Value Should Be    //div[normalize-space(text())="Pick up point - Mumbai"]/../..//span[normalize-space(text())="Borivali East"]/..    class    makeFlex ${SPACE}vrtlCenter pushLeft ${SPACE}selected${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Pick up time - Mumbai"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..    class    time-filter-option selected
+    Element Attribute Value Should Be    //div[normalize-space(text())="Travel Operators"]/../..//span[normalize-space(text())="Hans Travels (I) Private Limited"]/..    class    makeFlex ${SPACE}vrtlCenter pushLeft ${SPACE}selected${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Drop time - Delhi"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..    class    time-filter-option selected
+
+Clear Filters
+#apply clear filter
+    Scroll Element Into View    //p[@class="font12 latoBlack makeFlex vrtlCenter hrtlCenter deepskyBlueText cursorPointer "]
+    Click Element    //p[@class="font12 latoBlack makeFlex vrtlCenter hrtlCenter deepskyBlueText cursorPointer "]
+     #wait till the CLEAR ALL turns to disabled grey color
+    Wait Until Element Is Visible    //p[contains(@class,'disabledGrey')]
+
+Verify Filter Reset
+#verify all the filter buttons are inactive
+    Element Attribute Value Should Be    //span[normalize-space(text())="AC"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]    class    horiFilterBtn appendRight12${SPACE}
+    Element Attribute Value Should Be    //span[normalize-space(text())="Sleeper"]/../../div[contains(@class, 'horiFilterBtn appendRight12')]    class    horiFilterBtn appendRight12${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Pick up point - Mumbai"]/../..//span[normalize-space(text())="Borivali East"]/..    class    makeFlex ${SPACE}vrtlCenter pushLeft${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Pick up time - Mumbai"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..    class    time-filter-option${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Travel Operators"]/../..//span[normalize-space(text())="Hans Travels (I) Private Limited"]/..    class    makeFlex ${SPACE}vrtlCenter pushLeft${SPACE}
+    Element Attribute Value Should Be    //div[normalize-space(text())="Drop time - Delhi"]/../..//span[normalize-space(text())="6 AM to 11 AM"]/..    class    time-filter-option${SPACE}
+
+    [Documentation]    Verify all the filter buttons are inactive
+    ...    Should verify user can apply filters
+    ...    the user should able to reset filter after clicking "CLEAR ALL" button
+    ...    The "CLEAR ALL" button disabled after clicking.
+    ...    Verify all filter buttons are inactive
