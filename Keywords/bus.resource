@@ -105,14 +105,13 @@ verification for the window seat-filter
     # Wait Until Element Is Visible    busList
 
 
-Pickup point 
+Verify the pickup point is present in all bus containers
     [Arguments]    ${filterValue}    
 
     Wait Until Element Is Visible    //div[@class="busListingContainer"]/following-sibling::*[1]  
     Run Keyword And Ignore Error    Wait Until Element Is Visible    //div[@id='toggle_buses']
     Run Keyword And Ignore Error    Click Element    //div[@id='toggle_buses']
-    ${bus_count_element}=  Get Text  //p[contains(text(),'found')]
-    ${bus_count}=  Evaluate  '${bus_count_element}'.split(' ')[0]
+    ${bus_count}=  Get Number Of Search Results
     Log  Bus Count: ${bus_count}
     Wait Until Element Is Visible    //div[@class="busCardContainer "]//span[text()="Pickups & Drops"]
     FOR    ${index}    IN RANGE    1    ${bus_count}+1
@@ -125,12 +124,12 @@ Pickup point
 
 
 
-Verify the pickup point 
+Template for the verifying pickup point filter 
     [Arguments]     ${fromCity}    ${toCity}    ${heading}    ${filterValue}  
 
     search buses    fromCity=${fromCity}    toCity=${toCity}    Mon Dec 02 2024
     Select Filter    heading= ${heading}    filterValue=${filterValue}
-    Pickup point    filterValue=${filterValue}
+    Verify the pickup point is present in all bus containers    filterValue=${filterValue}
 
 
 filter-Primo buses and take bus count  

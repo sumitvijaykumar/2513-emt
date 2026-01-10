@@ -44,7 +44,7 @@ verify Filter-Single seat
  
     
 Verify the pickup point filter  
-    [Template]    Verify the pickup point    
+    [Template]    Template for the verifying pickup point filter     
     [Documentation]    Checking the functionality of the Pick up point filter, Verifying that the selected pickup point is present in all the bus containers 
     ...    Steps
     ...    1. Open the browser
