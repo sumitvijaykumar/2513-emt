@@ -308,3 +308,20 @@ Top Rated Buses Comparison
     #actual result and expecetd result should be same
     Should Be Equal    ${actual_result}    second=${expected_rating}                      
     Close All Browsers
+
+
+Verify travel operators
+    [Arguments]    ${filterValue}
+    
+    Sleep    time_=2s
+    Run Keyword And Ignore Error    Wait Until Element Is Visible    //div[@id='toggle_buses']
+    Run Keyword And Ignore Error    Click Element    locator    //div[@id='toggle_buses']
+      ${bus_count}=    Get Number Of Search Results 
+    FOR    ${index}    IN RANGE    1    ${bus_count}+1    
+        Log    message=Iteration:${index}
+        Wait Until Element Is Visible    (//div[@class="busCardContainer "]//p[contains(text(),'${filterValue}')])[${index}]    timeout=10s
+        
+    
+
+        
+    END
