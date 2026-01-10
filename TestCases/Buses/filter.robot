@@ -33,13 +33,23 @@ verify the filter for pick up time
 
 
 verify Filter-Single seat
+    [Documentation]    
+    ...    1,open the browser 
+    ...    2,go to home page 
+    ...    3,search bus 
+    ...    4,get count of the number of buses in filter- single seat 
+    ...    5,select filter 
+    ...    6,get count of actual results shown
+    ...    7,verify the two counts to be equal
+    ...    8,verify every result have "Window Seat"
+    ...    9,exit browser
     #Open Application
     #Go to Home Page
     search buses    from=mumbai    to=kolhapur    date=Sun Dec 01 2024
-    ${count1}    get count of window seat filter
+    ${expected_filter_results}    get count of window seat filter
     select filter    Single Seater    Single
-    ${count2}    Get count of the number of results
-    Should Be Equal    ${count1}    ${count2}
+    ${actual_result_count}    Get Number Of Search Results
+    Should Be Equal    ${expected_filter_results}    ${actual_result_count}
     verification for the window seat-filter
  
     
