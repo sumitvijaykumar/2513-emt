@@ -308,3 +308,31 @@ Top Rated Buses Comparison
     #actual result and expecetd result should be same
     Should Be Equal    ${actual_result}    second=${expected_rating}                      
     Close All Browsers
+
+
+
+Get Arrival Times
+
+   ${buslist}    SeleniumLibrary.Get WebElements    locator=//span[contains(@class,"font18 blackText")]
+   @{arrival_times}    BuiltIn.Create List
+   FOR    ${time}    IN    @{buslist}
+    ${arrivaltime}    SeleniumLibrary.Get Element Attribute    ${time}    textContent
+    ${arrivaltime}    Replace String    ${arrivaltime}    :     ${EMPTY}  
+    ${arrivaltime}    Convert To Integer    ${arrivaltime}    
+    Append To List    ${arrival_times}    ${arrivaltime}
+   END
+    Collections.Sort List    list_=${arrival_times}
+    ${minimum}    BuiltIn.Set Variable    ${arrival_times}[0]
+    ${maximum}    BuiltIn.Set Variable    ${arrival_times}[-1]
+    BuiltIn.Log To Console     ${minimum}
+    BuiltIn.Log To Console     ${maximum}
+    RETURN     ${minimum}   ${maximum}
+
+    
+
+  
+
+
+  
+
+
