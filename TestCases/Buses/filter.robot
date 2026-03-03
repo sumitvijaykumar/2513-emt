@@ -201,4 +201,11 @@ Sort By Arrival
 
 
 Verify Mydeals in buses
-    [Tags]    Bus    Search       
+    [Tags]    Bus    Search    
+
+verify functinality of AC filter
+     search buses  from=Mumbai   to=Kolhapur     date=Sun Dec 01 2024
+    ${expected_AcBusCount}   Get Ac Bus count before applying filter   
+    Select Filter  AC  AC    
+    ${Actual_acBusCount}   Get Number Of Search Results   
+    Should Be Equal As Integers  ${expected_AcBusCount}   ${Actual_acBusCount}       
